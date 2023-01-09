@@ -10,13 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 public class ConvertUtil {
-    public static BrandData convertBrandMastePojotoBrandData(BrandPojo p) {
-        BrandData d = new BrandData();
-        d.setCategory(p.getCategory());
-        d.setBrand(p.getBrand());
-        d.setId(p.getId());
-        return d;
-    }
 
     public static BrandForm convertBrandPojotoBrandForm(BrandPojo p) {
         BrandForm d = new BrandForm();
@@ -42,65 +35,64 @@ public class ConvertUtil {
     }
 
 
-//    public static BrandForm convertProductFormtoBrandForm(ProductForm f){
-//        BrandForm b = new BrandForm();
-//        b.setBrand(f.getBrand());
-//        b.setCategory(f.getCategory());
-//        return b;
-//    }
+    public static BrandForm convertProductFormtoBrandForm(ProductForm f){
+        BrandForm b = new BrandForm();
+        b.setBrand(f.getBrand());
+        b.setCategory(f.getCategory());
+        return b;
+    }
 
-//    public static ProductPojo convertProductFormtoProductMasterPojo(ProductForm f,BrandPojo b){
-//        ProductMasterPojo p = new ProductMasterPojo();
-//        p.setName(f.getName());
-//        p.setMrp(f.getMrp());
-//        p.setBarcode(StringUtil.generateBarcode());
-//        p.setBrandCategoryId(b.getId());
-//        return p;
-//    }
+    public static ProductPojo convertProductFormtoProductPojo(ProductForm f,BrandPojo b){
+        ProductPojo p = new ProductPojo();
+        p.setName(f.getName());
+        p.setMrp(f.getMrp());
+        p.setBarcode(StringUtil.generateBarcode());
+        p.setBrandCategoryId(b.getId());
+        return p;
+    }
 
-//    public static ProductData convertProductMasterPojotoProductData(ProductMasterPojo p,BrandPojo b){
-//        ProductData d = new ProductData();
-//        d.setBrand(b.getBrand());
-//        d.setCategory(b.getCategory());
-//        d.setId(p.getId());
-//        d.setName(p.getName());
-//        d.setMrp(p.getMrp());
-//        d.setBarcode(p.getBarcode());
-//        return d;
-//    }
+    public static ProductData convertProductPojotoProductData(ProductPojo p,BrandPojo b){
+        ProductData d = new ProductData();
+        d.setBrand(b.getBrand());
+        d.setCategory(b.getCategory());
+        d.setId(p.getId());
+        d.setName(p.getName());
+        d.setMrp(p.getMrp());
+        d.setBarcode(p.getBarcode());
+        return d;
+    }
 
-//    public static ProductMasterPojo convertProductFormtoProductMasterPojoU(ProductForm f,BrandPojo b){
-//        ProductMasterPojo p = new ProductMasterPojo();
-//        p.setBrandCategoryId(b.getId());
-//        p.setName(f.getName());
-//        p.setMrp(f.getMrp());
-//        return p;
-//    }
+    public static ProductPojo convertProductFormtoProductPojoU(ProductForm f,BrandPojo b){
+        ProductPojo p = new ProductPojo();
+        p.setBrandCategoryId(b.getId());
+        p.setName(f.getName());
+        p.setMrp(f.getMrp());
+        return p;
+    }
 
-//    public static ProductSearchForm convertInventorySearchFormtoProductSearchForm(InventorySearchForm form) {
-//        ProductSearchForm productSearchForm = new ProductSearchForm();
-//        productSearchForm.setBarcode(form.getBarcode());
-//        productSearchForm.setName(form.getName());
-//        return productSearchForm;
-//    }
+    public static ProductSearchForm convertInventorySearchFormtoProductSearchForm(InventorySearchForm form) {
+        ProductSearchForm productSearchForm = new ProductSearchForm();
+        productSearchForm.setBarcode(form.getBarcode());
+        productSearchForm.setName(form.getName());
+        return productSearchForm;
+    }
 
-//    public static InventoryData convertInventoryPojotoInventoryData(InventoryPojo i,
-//                                                                    ProductMasterPojo productMasterPojo) {
-//        InventoryData d = new InventoryData();
-//        d.id = i.getId();
-//        d.name = productMasterPojo.getName();
-//        d.barcode = productMasterPojo.getBarcode();
-//        d.quantity = i.getQuantity();
-//        return d;
-//    }
-//
-//    public static InventoryPojo convertInventoryFormtoInventoryPojo(InventoryForm f, ProductMasterPojo p) {
-//        InventoryPojo i = new InventoryPojo();
-//        i.setProductId(p.getId());
-//        i.setQuantity(f.getQuantity());
-//        return i;
-//    }
-//
+    public static InventoryData convertInventoryPojotoInventoryData(InventoryPojo i, ProductPojo productMasterPojo) {
+        InventoryData d = new InventoryData();
+        d.id = i.getId();
+        d.name = productMasterPojo.getName();
+        d.barcode = productMasterPojo.getBarcode();
+        d.quantity = i.getQuantity();
+        return d;
+    }
+
+    public static InventoryPojo convertInventoryFormtoInventoryPojo(InventoryForm f, ProductPojo p) {
+        InventoryPojo i = new InventoryPojo();
+        i.setProductId(p.getId());
+        i.setQuantity(f.getQuantity());
+        return i;
+    }
+
 //    public static OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo orderItemPojo,
 //                                                                    ProductMasterPojo productMasterPojo) {
 //        OrderItemData d = new OrderItemData();
@@ -112,26 +104,25 @@ public class ConvertUtil {
 //        d.sellingPrice = orderItemPojo.getSellingPrice();
 //        return d;
 //    }
-//
-//    public static ProductDetails convertProductDatatoProductDetails(ProductData productData,
-//                                                                    InventoryPojo inventoryPojo) {
-//        ProductDetails productDetails = new ProductDetails();
-//        productDetails.setBarcode(productData.getBarcode());
-//        productDetails.setBrand(productData.getBrand());
-//        productDetails.availableQuantity = inventoryPojo.getQuantity();
-//        productDetails.setCategory(productData.getCategory());
-//        productDetails.setMrp(productData.getMrp());
-//        productDetails.setName(productData.getName());
-//        productDetails.setId(productData.getId());
-//        return productDetails;
-//    }
 
-//    public static BrandForm convertProductSearchFormtoBrandForm(ProductSearchForm form) {
-//        BrandForm brandForm = new BrandForm();
-//        brandForm.setBrand(form.getBrand());
-//        brandForm.setCategory(form.getCategory());
-//        return brandForm;
-//    }
+    public static ProductDetails convertProductDatatoProductDetails(ProductData productData, InventoryPojo inventoryPojo) {
+        ProductDetails productDetails = new ProductDetails();
+        productDetails.setBarcode(productData.getBarcode());
+        productDetails.setBrand(productData.getBrand());
+        productDetails.availableQuantity = inventoryPojo.getQuantity();
+        productDetails.setCategory(productData.getCategory());
+        productDetails.setMrp(productData.getMrp());
+        productDetails.setName(productData.getName());
+        productDetails.setId(productData.getId());
+        return productDetails;
+    }
+
+    public static BrandForm convertProductSearchFormtoBrandForm(ProductSearchForm form) {
+        BrandForm brandForm = new BrandForm();
+        brandForm.setBrand(form.getBrand());
+        brandForm.setCategory(form.getCategory());
+        return brandForm;
+    }
 
 //    public static OrderItemPojo convertOrderItemFormToOrderItemPojo(OrderItemForm orderItemForm, OrderPojo orderPojo,
 //                                                                    ProductMasterPojo productMasterPojo) {
@@ -173,17 +164,15 @@ public class ConvertUtil {
 //        return d;
 //    }
 
-//    public static InventoryReportData convertToInventoryReportData(InventoryPojo inventoryPojo,
-//                                                                   BrandPojo brandMasterPojo) {
-//        InventoryReportData inventoryReportData = new InventoryReportData();
-//        inventoryReportData.setBrand(brandMasterPojo.getBrand());
-//        inventoryReportData.setCategory(brandMasterPojo.getCategory());
-//        inventoryReportData.setQuantity(inventoryPojo.getQuantity());
-//        return inventoryReportData;
-//    }
+    public static InventoryReportData convertToInventoryReportData(InventoryPojo inventoryPojo, BrandPojo brandMasterPojo) {
+        InventoryReportData inventoryReportData = new InventoryReportData();
+        inventoryReportData.setBrand(brandMasterPojo.getBrand());
+        inventoryReportData.setCategory(brandMasterPojo.getCategory());
+        inventoryReportData.setQuantity(inventoryPojo.getQuantity());
+        return inventoryReportData;
+    }
 
-//    public static SalesReportData convertToSalesReportData(OrderItemPojo orderItemPojo,
-//                                                           BrandPojo brandMasterPojo) {
+//    public static SalesReportData convertToSalesReportData(OrderItemPojo orderItemPojo, BrandPojo brandMasterPojo) {
 //        SalesReportData salesProductData = new SalesReportData();
 //        salesProductData.setBrand(brandMasterPojo.getBrand());
 //        salesProductData.setCategory(brandMasterPojo.getCategory());

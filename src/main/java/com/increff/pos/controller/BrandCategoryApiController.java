@@ -16,8 +16,6 @@ import java.util.List;
 @RequestMapping(value = "/api/brand")
 public class BrandCategoryApiController {
 
-    // todo 1-PDF Invoice Generation
-    //
     @Autowired
     private BrandDto brandDto;
 
@@ -29,7 +27,7 @@ public class BrandCategoryApiController {
 
     @ApiOperation(value = "Gets a brand by ID")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public BrandData get(@PathVariable int id) throws ApiException, ApiException {
+    public BrandData get(@PathVariable int id) throws ApiException {
         return brandDto.getBrandData(id);
     }
 

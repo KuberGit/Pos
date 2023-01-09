@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BrandForm {
-    private String brand;
-    private String category;
+public class ProductData extends ProductForm{
+    public int id;
+
+    private String barcode;
 
 }

@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head th:replace="snippets.html :: name_head"></head>
 
@@ -91,10 +91,8 @@
           </button>
         </div>
         <!-- Brand add form  -->
-        <form  id="brand-add-form" onsubmit="return addBrand()"  autocomplete="off">
+        <form  id="brand-add-form" autocomplete="off">
           <div class="modal-body">
-
-
             <div class="form-group row">
               <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
               <div class="col-sm-6">
@@ -134,8 +132,6 @@
         <!-- Brand edit form  -->
         <form  id="brand-edit-form" onsubmit="return updateBrand()"  autocomplete="off">
           <div class="modal-body">
-
-
             <div class="form-group row">
               <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
               <div class="col-sm-6">

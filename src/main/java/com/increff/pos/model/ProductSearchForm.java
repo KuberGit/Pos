@@ -5,8 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BrandForm {
+public class ProductSearchForm {
+    private String name;
     private String brand;
     private String category;
+    private String barcode;
+
 
 }
