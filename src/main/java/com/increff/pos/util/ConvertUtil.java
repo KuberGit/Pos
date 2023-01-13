@@ -93,17 +93,17 @@ public class ConvertUtil {
         return i;
     }
 
-//    public static OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo orderItemPojo,
-//                                                                    ProductMasterPojo productMasterPojo) {
-//        OrderItemData d = new OrderItemData();
-//        d.id = orderItemPojo.getId();
-//        d.orderId = orderItemPojo.getOrderId();
-//        d.name = productMasterPojo.getName();
-//        d.barcode = productMasterPojo.getBarcode();
-//        d.quantity = orderItemPojo.getQuantity();
-//        d.sellingPrice = orderItemPojo.getSellingPrice();
-//        return d;
-//    }
+    public static OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo orderItemPojo,
+                                                                    ProductPojo productMasterPojo) {
+        OrderItemData d = new OrderItemData();
+        d.id = orderItemPojo.getId();
+        d.orderId = orderItemPojo.getOrderId();
+        d.name = productMasterPojo.getName();
+        d.barcode = productMasterPojo.getBarcode();
+        d.quantity = orderItemPojo.getQuantity();
+        d.sellingPrice = orderItemPojo.getSellingPrice();
+        return d;
+    }
 
     public static ProductDetails convertProductDatatoProductDetails(ProductData productData, InventoryPojo inventoryPojo) {
         ProductDetails productDetails = new ProductDetails();
@@ -124,15 +124,15 @@ public class ConvertUtil {
         return brandForm;
     }
 
-//    public static OrderItemPojo convertOrderItemFormToOrderItemPojo(OrderItemForm orderItemForm, OrderPojo orderPojo,
-//                                                                    ProductMasterPojo productMasterPojo) {
-//        OrderItemPojo item = new OrderItemPojo();
-//        item.setOrderId(orderPojo.getId());
-//        item.setProductId(productMasterPojo.getId());
-//        item.setQuantity(orderItemForm.quantity);
-//        item.setSellingPrice(orderItemForm.sellingPrice);
-//        return item;
-//    }
+    public static OrderItemPojo convertOrderItemFormToOrderItemPojo(OrderItemForm orderItemForm, OrderPojo orderPojo,
+                                                                    ProductPojo productMasterPojo) {
+        OrderItemPojo item = new OrderItemPojo();
+        item.setOrderId(orderPojo.getId());
+        item.setProductId(productMasterPojo.getId());
+        item.setQuantity(orderItemForm.quantity);
+        item.setSellingPrice(orderItemForm.sellingPrice);
+        return item;
+    }
 
     public static String getDateTime() {
 
@@ -142,27 +142,27 @@ public class ConvertUtil {
         return datetime;
     }
 
-//    public static OrderData convertOrderPojotoOrderData(OrderPojo p, List<OrderItemPojo> orderItemPojos) {
-//        OrderData d = new OrderData();
-//        d.setId(p.getId());
-//        d.setDatetime(p.getDatetime());
-//        double billAmount = 0;
-//        for (OrderItemPojo orderItemPojo : orderItemPojos) {
-//            billAmount += orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice();
-//        }
-//        d.setBillAmount(billAmount);
-//        d.setIsInvoiceCreated(p.getInvoiceCreated());
-//        return d;
-//    }
+    public static OrderData convertOrderPojotoOrderData(OrderPojo p, List<OrderItemPojo> orderItemPojos) {
+        OrderData d = new OrderData();
+        d.setId(p.getId());
+        d.setDatetime(p.getDatetime());
+        double billAmount = 0;
+        for (OrderItemPojo orderItemPojo : orderItemPojos) {
+            billAmount += orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice();
+        }
+        d.setBillAmount(billAmount);
+        d.setIsInvoiceCreated(p.getInvoiceCreated());
+        return d;
+    }
 
-//    public static OrderData convertOrderPojoOrderData(OrderPojo pojo) {
-//        OrderData d = new OrderData();
-//        d.setId(pojo.getId());
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//        String datetime = String.valueOf(formatter);
-//        d.setDatetime(datetime);
-//        return d;
-//    }
+    public static OrderData convertOrderPojoOrderData(OrderPojo pojo) {
+        OrderData d = new OrderData();
+        d.setId(pojo.getId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String datetime = String.valueOf(formatter);
+        d.setDatetime(datetime);
+        return d;
+    }
 
     public static InventoryReportData convertToInventoryReportData(InventoryPojo inventoryPojo, BrandPojo brandMasterPojo) {
         InventoryReportData inventoryReportData = new InventoryReportData();
