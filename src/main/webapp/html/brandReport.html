@@ -1,0 +1,80 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container mt-4">
+
+    <center>
+        <h2>Brand Report</h2>
+    </center>
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- BrandReport form -->
+            <form class="form-inline w-100" id="brandreport-form" autocomplete="off">
+                <div class="col-12" style="margin-top: 5px">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="brand" id="inputBrand"
+                                       placeholder="Enter Brand" style="width:200%">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="category" id="inputCategory"
+                                       placeholder="Enter Category" style="width:200%">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-success" id="show-brandCategoryReport">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="row">
+        <!-- Table -->
+        <div class="col-12" style="margin-top: 20px">
+            <table class="table table-striped  css-serial" id="brandCategoryReport-table">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Category</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/brandsReport.js}"/>
+</script>
+
+</body>
+
+</html>

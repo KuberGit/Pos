@@ -56,10 +56,10 @@ public class OrderApiController {
     public void generateInvoice(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.generateInvoice(orderItemForms);
-        byte[] encodedBytes = invoiceConnect(list);
+        String base64Str = invoiceConnect(list);
 //        GenerateXML.createXml(list);
 //        byte[] encodedBytes = GeneratePDF.createPDF();
-        GeneratePDF.createResponse(response, encodedBytes);
+        GeneratePDF.createResponse(response, base64Str);
     }
 
     @ApiOperation(value = "Adds Order")
@@ -67,10 +67,10 @@ public class OrderApiController {
     public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.createOrder(orderItemForms);
-        byte[] encodedBytes = invoiceConnect(list);
+        String base64Str = invoiceConnect(list);
 //        GenerateXML.createXml(list);
 //        byte[] encodedBytes = GeneratePDF.createPDF();
-        GeneratePDF.createResponse(response, encodedBytes);
+        GeneratePDF.createResponse(response, base64Str);
     }
 
     @ApiOperation(value = "Search Orders")
@@ -84,19 +84,19 @@ public class OrderApiController {
     public void update(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> billItemList = orderDto.changeOrder(id, orderItemForms);
-        byte[] encodedBytes = invoiceConnect(billItemList);
+        String base64Str = invoiceConnect(billItemList);
 //        GenerateXML.createXml(billItemList);
 //        byte[] encodedBytes = GeneratePDF.createPDF();
-        GeneratePDF.createResponse(response, encodedBytes);
+        GeneratePDF.createResponse(response, base64Str);
     }
 
-    public byte[] invoiceConnect(List<BillData> list) throws ApiException{
+    public String invoiceConnect(List<BillData> list) throws ApiException{
         try {
             final String url = "http://localhost:8000/invoice/";
 
-            byte[] base64 = restTemplate.postForObject(url, list, byte[].class);
-            System.out.println("Received: " + base64);
-            return base64;
+            String base64Str = restTemplate.postForObject(url, list, String.class);
+//            System.out.println("Received: " + base64Str);
+            return base64Str;
 
 //            File dir = FileUtil.createDirectory("invoiceFiles");
 //            File bill = new File("invoiceFiles/bill" + ".pdf");

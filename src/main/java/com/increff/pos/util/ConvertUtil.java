@@ -172,19 +172,19 @@ public class ConvertUtil {
         return inventoryReportData;
     }
 
-//    public static SalesReportData convertToSalesReportData(OrderItemPojo orderItemPojo, BrandPojo brandMasterPojo) {
-//        SalesReportData salesProductData = new SalesReportData();
-//        salesProductData.setBrand(brandMasterPojo.getBrand());
-//        salesProductData.setCategory(brandMasterPojo.getCategory());
-//        salesProductData.setQuantity(orderItemPojo.getQuantity());
-//        salesProductData.setRevenue(orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice());
-//        return salesProductData;
-//    }
+    public static SalesReportData convertToSalesReportData(OrderItemPojo orderItemPojo, BrandPojo brandMasterPojo) {
+        SalesReportData salesProductData = new SalesReportData();
+        salesProductData.setBrand(brandMasterPojo.getBrand());
+        salesProductData.setCategory(brandMasterPojo.getCategory());
+        salesProductData.setQuantity(orderItemPojo.getQuantity());
+        salesProductData.setRevenue(orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice());
+        return salesProductData;
+    }
 
-//    public static BrandForm convertSalesReportFormtoBrandForm(SalesReportForm salesReportForm) {
-//        BrandForm brandForm = new BrandForm();
-//        brandForm.setBrand(salesReportForm.getBrand());
-//        brandForm.setCategory(salesReportForm.getCategory());
-//        return brandForm;
-//    }
+    public static BrandForm convertSalesReportFormtoBrandForm(SalesReportForm salesReportForm) {
+        BrandForm brandForm = new BrandForm();
+        brandForm.setBrand(salesReportForm.getBrand());
+        brandForm.setCategory(salesReportForm.getCategory());
+        return brandForm;
+    }
 }

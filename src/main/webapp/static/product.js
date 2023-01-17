@@ -48,7 +48,7 @@ function addProduct(event){
 		success: function(response) {
 			$('#add-product-modal').modal('toggle');
 			$('#product-add-form').trigger("reset");
-//	   		$.notify("Brand added successfully !!","success");
+	   		$.notify("Brand added successfully !!","success");
 	   		searchProduct();
 	   		document.getElementById("download-errors-product").disabled = true;
 	   	},
@@ -77,7 +77,7 @@ function updateProduct(event){
 		},
 		success: function(response) {
 			$('#edit-product-modal').modal('toggle');
-//	   		$.notify("Brand updated successfully !!","success");
+	   		$.notify("Brand updated successfully !!","success");
 	   		searchProduct();
 	   	},
 	   	error: handleAjaxError
@@ -176,7 +176,7 @@ function displayProductList(data){
 	for(var i in data){
 		var e = data[i];
 		// dynamic buttons
-		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
+		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditProduct(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 		var row = '<tr>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.brand + '</td>'

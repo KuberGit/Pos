@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <head th:replace="snippets.html :: name_head"></head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        .icon {
+            width: 20rem;
+            height: 20rem;
+        }
+        .icon-container{
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+        }
+        .icon-container > * {
+          margin: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav th:replace = "snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+    <h1 class="text-center">Reports</h1>
+    <div class="icon-container">
+        <div>
+            <a th:href="@{/ui/report/brandReport}">
+                <img class="icon" th:src="@{/static/assets/brand_report_icon.png}" alt="Brand Report">
+                <p class="text-center">Brand Report</p>
+            </a>
+        </div>
+        <div>
+            <a th:href="@{/ui/report/inventoryReport}">
+                <img class="icon" th:src="@{/static/assets/inventory_report_icon.png}" alt="Inventory Report">
+                <p class="text-center">Inventory Report</p>
+            </a>
+        </div>
+        <div>
+            <a th:href="@{/ui/report/salesReport}">
+                <img class="icon" th:src="@{/static/assets/sales_report_icon.png}" alt="Sales Report">
+                <p class="text-center">Sales Report</p>
+            </a>
+        </div>
+        <div>
+            <a th:href="@{/ui/report/daySalesReport}">
+                <img class="icon" th:src="@{/static/assets/day_sales_icon.png}" alt="Day Sales">
+                <p class="text-center">Day Sales</p>
+            </a>
+        </div>
+    </div>
+</div>
+<footer th:replace="snippets.html :: name_footer"></footer>
+<script th:src="@{/static/report.js}"/>
+</script>
+</body>
+</html>

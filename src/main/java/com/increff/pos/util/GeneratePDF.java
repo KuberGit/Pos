@@ -1,5 +1,6 @@
 package com.increff.pos.util;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.fop.apps.*;
 
 import javax.servlet.ServletOutputStream;
@@ -47,7 +48,7 @@ public class GeneratePDF {
 
     }
 
-    public static void createResponse(HttpServletResponse response, byte[] encodedBytes) throws IOException {
+    public static void createResponse(HttpServletResponse response, String base64Str) throws IOException {
         String pdfFileName = "output.pdf";
         response.reset();
         response.addHeader("Pragma", "public");
@@ -56,9 +57,10 @@ public class GeneratePDF {
         response.setContentType("application/pdf");
 
         // avoid "byte shaving" by specifying precise length of transferred data
-        response.setContentLength(encodedBytes.length);
+        byte[] decodedBytes = Base64.decodeBase64(base64Str);
+        response.setContentLength(decodedBytes.length);
         ServletOutputStream servletOutputStream = response.getOutputStream();
-        servletOutputStream.write(encodedBytes);
+        servletOutputStream.write(decodedBytes);
         servletOutputStream.flush();
         servletOutputStream.close();
     }

@@ -294,22 +294,24 @@ function generateInvoice(id){
 function displayOrderList(data){
 		var $tbodyOrder = $('#order-table').find('tbody');
 		$tbodyOrder.empty();
+		var n = 1;
 		for(var i in data){
 			var e = data[i];
 			if(e.isInvoiceCreated == 1){
-			   var buttonHtml =' <button class="btn btn-danger disabled" >Edit</button>'
+			   var buttonHtml =' <button class="btn btn-danger disabled" ><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 			}else{
-			   var buttonHtml =' <button class="btn btn-outline-success" onclick="editOrder(' + e.id + ')">Edit</button>'
+			   var buttonHtml =' <button class="btn btn-outline-success" onclick="editOrder(' + n + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 			}
-			buttonHtml+=' <button class="btn btn-outline-primary" onclick="viewOrder(' + e.id + ')">View</button>'
-			buttonHtml+=' <button class="btn btn-outline-success" onclick="generateInvoice(' + e.id + ')">Invoice</button>'
+			buttonHtml+=' <button class="btn btn-outline-primary" onclick="viewOrder(' + e.id + ')"><i class="fa fa-info fa-lg" aria-hidden="true"></i></button>'
+			buttonHtml+=' <button class="btn btn-outline-success" onclick="generateInvoice(' + e.id + ')"><i class="fa fa-file-invoice fa-lg" aria-hidden="true"></i></button>'
 			var row = '<tr>'
-			+ '<td>' + e.id + '</td>'
+			+ '<td>' + n + '</td>'
 			+ '<td>' + e.datetime + '</td>'
 			+ '<td>' + e.billAmount + '</td>'
 			+ '<td>' + buttonHtml + '</td>'
 			+ '</tr>';
 			$tbodyOrder.append(row);
+			n++;
 		}
 }
 	// update fields

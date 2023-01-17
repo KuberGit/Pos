@@ -13,10 +13,10 @@
 //}
 //
 //
-//function handleAjaxError(response){
-//	var response = JSON.parse(response.responseText);
-//	alert(response.message);
-//}
+function handleAjaxError(response){
+	var response = JSON.parse(response.responseText);
+	$.notify(response.message,'error');
+}
 //
 //function readFileData(file, callback){
 //	var config = {
@@ -64,10 +64,10 @@ function toJson($form){
     var json = JSON.stringify(data);
     return json;
 }
-function handleAjaxError(response){
-    var response = JSON.parse(response.responseText);
-    alert(response.message);
-}
+//function handleAjaxError(response){
+//    var response = JSON.parse(response.responseText);
+//    alert(response.message);
+//}
 function readFileData(file, callback){
     var config = {
         header: true,

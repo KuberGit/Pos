@@ -40,6 +40,11 @@ public class ProductService {
         return dao.select(ProductPojo.class,id);
     }
 
+
+    public List<ProductPojo> getProductByBrandCategoryId(int brandCategoryId) {
+        return dao.getProductByBrandCategory(brandCategoryId);
+    }
+
     @Transactional
     public List<ProductPojo> getAll() {
         return dao.selectAll();

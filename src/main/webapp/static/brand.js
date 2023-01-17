@@ -49,7 +49,7 @@ function addBrand(event){
 		success: function(response) {
 			$('#add-brand-modal').modal('toggle');
 			$('#brand-add-form').trigger("reset");
-//	   		$.notify("Brand added successfully !!","success");
+	   		$.notify("Brand added successfully !!","success");
 	   		searchBrand();
 	   		document.getElementById("download-errors-brand").disabled = true;
 	   	},
@@ -78,7 +78,7 @@ function updateBrand(event){
 		},	   
 		success: function(response) {
 			$('#edit-brand-modal').modal('toggle');
-//	   		$.notify("Brand updated successfully !!","success");
+	   		$.notify("Brand updated successfully !!","success");
 	   		searchBrand();
 	   	},
 	   	error: handleAjaxError
@@ -178,7 +178,7 @@ function displayBrandList(data){
 	for(var i in data){
 		var e = data[i];
 		// dynamic buttons
-		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
+		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 		var row = '<tr>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
