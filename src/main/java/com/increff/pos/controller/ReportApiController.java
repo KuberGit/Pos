@@ -5,6 +5,7 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
 import com.increff.pos.model.SalesReportForm;
+import com.increff.pos.pojo.DailySalesPojo;
 import com.increff.pos.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,5 +43,11 @@ public class ReportApiController {
     public List<SalesReportData> getSalesReport(@RequestBody SalesReportForm salesReportForm)
             throws ParseException, ApiException {
         return reportDto.getSalesReport(salesReportForm);
+    }
+
+    @ApiOperation(value = "Gets list of daily sales report")
+    @RequestMapping(path = "/daySales-report", method = RequestMethod.GET)
+    public List<DailySalesPojo> getDailySales() throws ApiException {
+        return reportDto.getDailySales();
     }
 }

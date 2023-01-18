@@ -61,6 +61,7 @@ function toJson($form){
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
+
     var json = JSON.stringify(data);
     return json;
 }

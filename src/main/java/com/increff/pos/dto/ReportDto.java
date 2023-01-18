@@ -8,10 +8,14 @@ import com.increff.pos.pojo.*;
 import com.increff.pos.service.*;
 import com.increff.pos.util.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,8 @@ public class ReportDto {
     private OrderItemService orderItemService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private DailySalesService dailySalesService;
 
     public List<BrandForm> getBrandReport(BrandForm form){
         List<BrandPojo> list = brandService.searchBrandCategoryData(form);
@@ -59,8 +65,17 @@ public class ReportDto {
         return inventoryReportData;
     }
 
+    private String convertDate(String dateYYYYMMDD)
+    {
+        String dateArr[] = dateYYYYMMDD.split("-");
+        String dateDDMMYYYY = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+        return dateDDMMYYYY;
+    }
     public List<SalesReportData> getSalesReport(SalesReportForm salesReportForm) throws ParseException, ApiException {
-        List<Integer> orderIds = getOrderIds(salesReportForm);
+        salesReportForm.startdate = convertDate(salesReportForm.getStartdate());
+        salesReportForm.enddate =convertDate(salesReportForm.getEnddate());
+
+                List<Integer> orderIds = getOrderIds(salesReportForm);
         BrandForm brandForm = ConvertUtil.convertSalesReportFormtoBrandForm(salesReportForm);
         List<BrandPojo> brandMasterPojoList = brandService.searchBrandCategoryData(brandForm);
         List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
@@ -88,5 +103,56 @@ public class ReportDto {
             return orderPojo.stream().map(o -> o.getId()).collect(Collectors.toList());
         }
         return reportService.getOrderIdList(orderPojo, salesReportForm.startdate, salesReportForm.enddate);
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public List<DailySalesPojo> getDailySales() throws ApiException {
+        return dailySalesService.getAll();
+    }
+
+    @Scheduled(cron = "0 13 16 * * ?")
+    @Transactional(rollbackOn = ApiException.class)
+    public void saveDailySales() throws ApiException {
+        DailySalesPojo p = new DailySalesPojo();
+        Date today = new Date();
+        Date start = getStartOfDay(today, Calendar.getInstance());
+        Date end = getEndOfDay(today, Calendar.getInstance());
+        List<OrderPojo> orders = orderService.getAllInTimeDuration(start, end);
+        p.setOrders(orders.size());
+        p.setDate(today);
+        System.out.println(today);
+        double totalRevenue = 0;
+        int totalItems = 0;
+        for(OrderPojo order:orders) {
+            List<OrderItemPojo> items = orderItemService.getByOrderId(order.getId());
+            totalItems+=items.size();
+            for(OrderItemPojo item:items) {
+                totalRevenue += item.getSellingPrice()*item.getQuantity();
+            }
+        }
+        p.setItems(totalItems);
+        p.setRevenue(totalRevenue);
+
+        dailySalesService.add(p);
+    }
+
+    public static Date getStartOfDay(Date day,Calendar cal) {
+        if (day == null) day = new Date();
+        cal.setTime(day);
+        cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE,      cal.getMinimum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND,      cal.getMinimum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
+        return cal.getTime();
+    }
+
+    public static Date getEndOfDay(Date day,Calendar cal) {
+        if (day == null) day = new Date();
+        cal.setTime(day);
+        cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE,      cal.getMaximum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND,      cal.getMaximum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
+        return cal.getTime();
     }
 }

@@ -48,7 +48,7 @@ function addProduct(event){
 		success: function(response) {
 			$('#add-product-modal').modal('toggle');
 			$('#product-add-form').trigger("reset");
-	   		$.notify("Brand added successfully !!","success");
+	   		$.notify("Product added successfully !!","success");
 	   		searchProduct();
 	   		document.getElementById("download-errors-product").disabled = true;
 	   	},

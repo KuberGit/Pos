@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -68,13 +69,15 @@ public class OrderService {
         }
     }
 
-    // search between two ddtt
+//     search between two ddtt
     public List<OrderPojo> getListSearch(List<OrderPojo> p , String start , String end) throws ParseException {
         List<OrderPojo> reqList = new ArrayList<OrderPojo>();
+
 //        https://www.javatpoint.com/java-string-to-date
         for(OrderPojo o:p){
             SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
-            String recDate = o.getDatetime().split(" ")[0];
+            Date todayWithZeroTime = formatter.parse(formatter.format(o.getDatetime()));
+            String recDate = todayWithZeroTime.toString();
             if((formatter.parse(start).before(formatter.parse(recDate)) || formatter.parse(start).equals(formatter.parse(recDate))) && (formatter.parse(recDate).before(formatter.parse(end)) || formatter.parse(recDate).equals(formatter.parse(end)))){
                 reqList.add(o);
             }
@@ -117,5 +120,10 @@ public class OrderService {
             throw new ApiException("Order doesn't exist - id : " + id);
         }
         return p;
+    }
+
+    @Transactional
+    public List<OrderPojo> getAllInTimeDuration(Date start, Date end) {
+        return dao.selectAllInTimeDuration(start, end);
     }
 }

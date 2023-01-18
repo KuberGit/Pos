@@ -4,8 +4,10 @@ function getSalesReportUrl(){
 }
 
 function salesReport(){
-    var startdate = $('#inputStartDate').val().trim();
-	var enddate = $('#inputEndDate').val().trim();
+    let startdate = $('#inputStartDate').val().trim();
+	let enddate = $('#inputEndDate').val().trim();
+
+
 	// validate dates
 	if(startdate=="" && enddate!=""){
 		$.notify("Enter both dates or none !!","error");
@@ -17,9 +19,13 @@ function salesReport(){
 		return false;
 	}
 
+	console.log(startdate);
+    console.log(enddate);
+
 	var $form = $("#salesreport-form");
 	// form to json
-	var json = toJson($form);
+	let json = toJson($form);
+
 	var url = getSalesReportUrl();
 	// call api
 	$.ajax({

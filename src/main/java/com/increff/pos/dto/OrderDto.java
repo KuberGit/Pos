@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -76,7 +73,8 @@ public class OrderDto {
     public OrderPojo addOrder(List<OrderItemForm> orderItems) throws ApiException {
         orderService.checkAvailabilityInventory(orderItems);
         OrderPojo orderPojo = new OrderPojo();
-        orderPojo.setDatetime(ConvertUtil.getDateTime());
+        Date date = new Date();
+        orderPojo.setDatetime(date);
         orderService.add(orderPojo);
         return orderPojo;
     }
@@ -106,7 +104,8 @@ public class OrderDto {
     public OrderPojo updateOrder(int id, List<OrderItemForm> orderItems) throws ApiException {
         orderService.checkAvailabilityInventory(orderItems);
         OrderPojo orderPojo = new OrderPojo();
-        orderPojo.setDatetime(ConvertUtil.getDateTime());
+        Date date = new Date();
+        orderPojo.setDatetime(date);
         orderService.update(id, orderPojo);
         orderPojo.setId(id);
         return orderPojo;

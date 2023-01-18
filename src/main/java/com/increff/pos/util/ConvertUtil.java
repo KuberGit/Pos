@@ -135,7 +135,6 @@ public class ConvertUtil {
     }
 
     public static String getDateTime() {
-
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         Date dateobj = new Date();
         String datetime = df.format(dateobj);
@@ -158,9 +157,7 @@ public class ConvertUtil {
     public static OrderData convertOrderPojoOrderData(OrderPojo pojo) {
         OrderData d = new OrderData();
         d.setId(pojo.getId());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String datetime = String.valueOf(formatter);
-        d.setDatetime(datetime);
+        d.setDatetime(pojo.getDatetime());
         return d;
     }
 
