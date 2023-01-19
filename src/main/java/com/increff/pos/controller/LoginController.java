@@ -34,7 +34,7 @@ public class LoginController {
 	private UserService service;
 	@Autowired
 	private InfoData info;
-	
+
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
@@ -54,7 +54,7 @@ public class LoginController {
 		// Attach Authentication object to the Security Context
 		SecurityUtil.setAuthentication(authentication);
 
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/ui/home");
 
 	}
 

@@ -1,13 +1,17 @@
 package com.increff.pos.spring;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-//@Configuration
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(securedEnabled = true)
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static Logger logger = Logger.getLogger(SecurityConfig.class);
@@ -16,15 +20,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http//
-			// Match only these URLs
+				// Match only these URLs
 				.requestMatchers()//
 				.antMatchers("/api/**")//
 				.antMatchers("/ui/**")//
 				.and().authorizeRequests()//
-				.antMatchers("/api/admin/**").hasAuthority("admin")//
-				.antMatchers("/api/**").hasAnyAuthority("admin", "standard")//
-				.antMatchers("/ui/admin/**").hasAuthority("admin")//
-				.antMatchers("/ui/**").hasAnyAuthority("admin", "standard")//
+				.antMatchers(HttpMethod.POST,"/api/reports/sales").hasAnyAuthority("supervisor", "operator")
+				.antMatchers(HttpMethod.POST,"/api/orders").hasAnyAuthority("supervisor", "operator")
+				.antMatchers(HttpMethod.PUT,"/api/orders/**").hasAnyAuthority("supervisor", "operator")
+				.antMatchers(HttpMethod.POST,"/api/**").hasAuthority("supervisor")
+				.antMatchers(HttpMethod.PUT,"/api/**").hasAuthority("supervisor")
+				.antMatchers("/api/admin/**").hasAuthority("supervisor")//
+				.antMatchers("/api/**").hasAnyAuthority("supervisor", "operator")//
+				.antMatchers("/ui/admin/**").hasAuthority("supervisor")//
+				.antMatchers("/ui/**").hasAnyAuthority("supervisor", "operator")//
+				.and().formLogin().loginPage("/site/login")
 				// Ignore CSRF and CORS
 				.and().csrf().disable().cors().disable();
 		logger.info("Configuration complete");

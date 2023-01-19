@@ -184,4 +184,21 @@ public class ConvertUtil {
         brandForm.setCategory(salesReportForm.getCategory());
         return brandForm;
     }
+
+    public static UserPojo convertFormToPojo(UserForm userForm) {
+        UserPojo user = new UserPojo();
+        user.setEmail(userForm.getEmail());
+        user.setPassword(userForm.getPassword());
+        return user;
+    }
+
+    public static UserData convertPojoToData(UserPojo user) {
+        UserData data = new UserData();
+        data.setEmail(user.getEmail());
+        data.setRole(user.getRole());
+        data.setId(user.getId());
+        return data;
+    }
+
+
 }

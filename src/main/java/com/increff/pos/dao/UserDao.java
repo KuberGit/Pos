@@ -18,14 +18,14 @@ public class UserDao extends AbstractDao {
 	private static String select_email = "select p from UserPojo p where email=:email";
 	private static String select_all = "select p from UserPojo p";
 
-	
+
 	@Transactional
 	public void insert(UserPojo p) {
-		em().persist(p);
+		em.persist(p);
 	}
 
 	public int delete(int id) {
-		Query query = em().createQuery(delete_id);
+		Query query = em.createQuery(delete_id);
 		query.setParameter("id", id);
 		return query.executeUpdate();
 	}
