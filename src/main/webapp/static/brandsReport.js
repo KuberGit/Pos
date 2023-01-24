@@ -3,6 +3,11 @@ function getBrandReportUrl(){
 	return baseUrl + "/api/brand";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
 function brandCategoryReport(){
 	//Set the values to add
 //	var $tbody = $('#brandreport-table').find('tbody');

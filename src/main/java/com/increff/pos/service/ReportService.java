@@ -65,8 +65,7 @@ public class ReportService {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         for (OrderPojo p : o) {
             // Split datetime with space and get first element of array as date
-            Date todayWithZeroTime = sdf.parse(sdf.format(p.getDatetime()));
-            String receivedDate = todayWithZeroTime.toString();
+            String receivedDate = sdf.format(p.getDatetime());
             // Compares date with startdate and enddate
             if ((sdf.parse(startdate).before(sdf.parse(receivedDate))
                     || sdf.parse(startdate).equals(sdf.parse(receivedDate)))

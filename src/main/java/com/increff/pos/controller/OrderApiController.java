@@ -52,13 +52,11 @@ public class OrderApiController {
     }
 
     @ApiOperation(value = "Generates invoice")
-    @RequestMapping(value = "/invoice",method = RequestMethod.POST)
+    @RequestMapping(value = "/invoice", method = RequestMethod.POST)
     public void generateInvoice(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.generateInvoice(orderItemForms);
         String base64Str = invoiceConnect(list);
-//        GenerateXML.createXml(list);
-//        byte[] encodedBytes = GeneratePDF.createPDF();
         GeneratePDF.createResponse(response, base64Str);
     }
 
@@ -68,8 +66,6 @@ public class OrderApiController {
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.createOrder(orderItemForms);
         String base64Str = invoiceConnect(list);
-//        GenerateXML.createXml(list);
-//        byte[] encodedBytes = GeneratePDF.createPDF();
         GeneratePDF.createResponse(response, base64Str);
     }
 
@@ -85,30 +81,16 @@ public class OrderApiController {
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> billItemList = orderDto.changeOrder(id, orderItemForms);
         String base64Str = invoiceConnect(billItemList);
-//        GenerateXML.createXml(billItemList);
-//        byte[] encodedBytes = GeneratePDF.createPDF();
         GeneratePDF.createResponse(response, base64Str);
     }
 
-    public String invoiceConnect(List<BillData> list) throws ApiException{
+    public String invoiceConnect(List<BillData> list) throws ApiException {
         try {
             final String url = "http://localhost:8000/invoice/";
 
             String base64Str = restTemplate.postForObject(url, list, String.class);
-//            System.out.println("Received: " + base64Str);
             return base64Str;
-
-//            File dir = FileUtil.createDirectory("invoiceFiles");
-//            File bill = new File("invoiceFiles/bill" + ".pdf");
-//
-//            byte[] decodedPdf = Base64.decodeBase64(base64Str);
-//            FileOutputStream outputStream = new FileOutputStream(bill);
-//            outputStream.write(decodedPdf);
-//            outputStream.flush();
-//            outputStream.getFD().sync();
-//            outputStream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ApiException(e.getMessage());
         }
     }

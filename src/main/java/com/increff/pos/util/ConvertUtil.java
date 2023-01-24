@@ -134,13 +134,6 @@ public class ConvertUtil {
         return item;
     }
 
-    public static String getDateTime() {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        Date dateobj = new Date();
-        String datetime = df.format(dateobj);
-        return datetime;
-    }
-
     public static OrderData convertOrderPojotoOrderData(OrderPojo p, List<OrderItemPojo> orderItemPojos) {
         OrderData d = new OrderData();
         d.setId(p.getId());
@@ -152,21 +145,6 @@ public class ConvertUtil {
         d.setBillAmount(billAmount);
         d.setIsInvoiceCreated(p.getInvoiceCreated());
         return d;
-    }
-
-    public static OrderData convertOrderPojoOrderData(OrderPojo pojo) {
-        OrderData d = new OrderData();
-        d.setId(pojo.getId());
-        d.setDatetime(pojo.getDatetime());
-        return d;
-    }
-
-    public static InventoryReportData convertToInventoryReportData(InventoryPojo inventoryPojo, BrandPojo brandMasterPojo) {
-        InventoryReportData inventoryReportData = new InventoryReportData();
-        inventoryReportData.setBrand(brandMasterPojo.getBrand());
-        inventoryReportData.setCategory(brandMasterPojo.getCategory());
-        inventoryReportData.setQuantity(inventoryPojo.getQuantity());
-        return inventoryReportData;
     }
 
     public static SalesReportData convertToSalesReportData(OrderItemPojo orderItemPojo, BrandPojo brandMasterPojo) {

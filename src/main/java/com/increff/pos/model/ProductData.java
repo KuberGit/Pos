@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class ProductData extends ProductForm{
     public int id;
-
     private String barcode;
 
 }

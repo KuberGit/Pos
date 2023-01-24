@@ -3,6 +3,11 @@ function getSalesReportUrl(){
 	return baseUrl + "/api/sales-report";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
 function salesReport(){
     let startdate = $('#inputStartDate').val().trim();
 	let enddate = $('#inputEndDate').val().trim();

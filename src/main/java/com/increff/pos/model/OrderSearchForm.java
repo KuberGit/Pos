@@ -1,5 +1,10 @@
 package com.increff.pos.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class OrderSearchForm {
 
     private int id;
@@ -7,35 +12,4 @@ public class OrderSearchForm {
     private String startDate;
     private String endDate;
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getOrderUser() {
-        return orderUser;
-    }
-
-    public void setOrderUser(String orderUser) {
-        this.orderUser = orderUser;
-    }
 }

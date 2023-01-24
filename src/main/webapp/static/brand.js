@@ -4,6 +4,10 @@ function getBrandUrl(){
 	return baseUrl + "/api/brand";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
 
 //BUTTON ACTIONS
 function searchBrand(event){
@@ -107,61 +111,7 @@ var fileData = [];
 var errorData = [];
 var processCount = 0;
 
-//function processDataBrand(){
-//	var file = $('#brandFile')[0].files[0];
-//	readFileData(file, readFileDataCallbackBrand);
-//}
-//
-//function readFileDataCallbackBrand(results){
-//	fileData = results.data;
-//	// check no of rows
-//	if(fileData.length > 5000)
-//	{
-//		$.notify("File Contains more than 5000 rows !!","error");
-//		return;
-//	}
-//	uploadRowsBrand();
-//}
-//
-//function uploadRowsBrand(){
-//	//Update progress
-//	updateUploadDialogBrand();
-//	//If everything processed then return
-//	if(processCount==fileData.length){
-//		$.notify("File processed successfully !!","success");
-//	   	searchBrand();
-//		return;
-//	}
-//
-//	//Process next row
-//	var row = fileData[processCount];
-//	processCount++;
-//
-//	var json = JSON.stringify(row);
-//	var url = getBrandUrl();
-//
-//	//Make ajax call
-//	$.ajax({
-//		url: url,
-//		type: 'POST',
-//		data: json,
-//		headers: {
-//			'Content-Type': 'application/json'
-//		},
-//		success: function(response) {
-//			uploadRowsBrand();
-//		},
-//		error: function(response){
-//			row.error=response.responseText
-//			errorData.push(row);
-//			uploadRowsBrand();
-//		}
-//	});
-//
-//}
-//
-//var $button = $('#download-errors-brand');
-//$button.disabled = true;
+
 document.getElementById("download-errors-brand").disabled = true;
 
 function downloadErrorsBrand(){
@@ -178,7 +128,10 @@ function displayBrandList(data){
 	for(var i in data){
 		var e = data[i];
 		// dynamic buttons
-		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
+		var buttonHtml = '';
+		if(getRole() === "supervisor" ){
+		    buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
+		}
 		var row = '<tr>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
@@ -258,10 +211,6 @@ function init(){
 	$('#add-brand').click(addBrand);
 }
 
-$(document).ready(init);
-$(document).ready(getBrandList);
-
-
 function processData(){
    var file = $('#brandFile')[0].files[0];
    console.log(file);
@@ -298,40 +247,8 @@ function readFileDataCallback(results){
    uploadRows();
 }
 
-//function uploadRows(){
-//   //Update progress
-//   updateUploadDialog();
-//   //If everything processed then return
-//   if(processCount==fileData.length){
-//      return;
-//   }
-//
-//   //Process next row
-//   var row = fileData[processCount];
-//   processCount++;
-//
-//   var json = JSON.stringify(row);
-//   var url = getBrandUrl();
-//
-//   //Make ajax call
-//   $.ajax({
-//      url: url,
-//      type: 'POST',
-//      data: json,
-//      headers: {
-//           'Content-Type': 'application/json'
-//       },
-//      success: function(response) {
-//             uploadRows();
-//      },
-//      error: function(response){
-//             row.error=response.responseText
-//             errorData.push(row);
-//             uploadRows();
-//      }
-//   });
-//
-//}
+$('#nav-brand').addClass('active');
+
 
 function downloadErrors(){
    var url = "/pos/download/error";
@@ -347,85 +264,6 @@ function downloadErrors(){
     });
 }
 
-//UI DISPLAY METHODS
+$(document).ready(init);
+$(document).ready(getBrandList);
 
-//function displayBrandList(data){
-//   var $tbody = $('#brand-table').find('tbody');
-//   $tbody.empty();
-//   for(var i in data){
-//      var b = data[i];
-////    var buttonHtml = '<button onclick="deleteBrand(' + b.id + ')">delete</button>'
-//      var buttonHtml = '<button class="btn btn-outline-dark px-4 mx-2" data-toggle="tooltip" title="Edit" onclick="displayEditBrand(' + b.id + ')"><i class="fa fa-edit fa-lg"></i></button>'
-//      var row = '<tr>'
-//      + '<td>&nbsp;</td>'
-//      + '<td>' + b.brand + '</td>'
-//      + '<td>' + b.category + '</td>'
-//      + '<td>' + buttonHtml + '</td>'
-//      + '</tr>';
-//        $tbody.append(row);
-//   }
-//}
-//
-//function displayEditBrand(id){
-//   var url = getBrandUrl() + "/" + id;
-//   $.ajax({
-//      url: url,
-//      type: 'GET',
-//      success: function(data) {
-//             displayBrand(data);
-//      },
-//      error: handleAjaxError
-//   });
-//}
-//
-//function resetUploadDialog(){
-//   //Reset file name
-//   var $file = $('#brandFile');
-//   $file.val('');
-//   $('#brandFileName').html("Choose File");
-//   //Reset various counts
-//   processCount = 0;
-//   fileData = [];
-//   errorData = [];
-//   //Update counts
-//   updateUploadDialog();
-//}
-
-//function updateUploadDialog(){
-//   $('#rowCountBrand').html("" + fileData.length);
-//   $('#processCountBrand').html("" + processCount);
-//   $('#errorCountBrand').html("" + errorData.length);
-//}
-//
-//function updateFileName(){
-//   var $file = $('#brandFile');
-//   var fileName = $file.val();
-//   $('#brandFileName').html(fileName);
-//}
-//
-//function displayUploadData(){
-//   resetUploadDialog();
-//   $('#upload-brand-modal').modal('toggle');
-//}
-//
-//function displayBrand(data){
-//   $("#brand-edit-form input[name=brand]").val(data.brand);
-//   $("#brand-edit-form input[name=category]").val(data.category);
-//   $("#brand-edit-form input[name=id]").val(data.id);
-//   $('#edit-brand-modal').modal('toggle');
-//}
-
-
-//INITIALIZATION CODE
-//function init(){
-//   $('#brand-form').submit(addBrand);
-//   $('#brand-edit-form').submit(updateBrand);
-//   $('#refresh-data').click(getBrandList);
-//   $('#upload-data').click(displayUploadData);
-//   $('#process-data').click(processData);
-//   $('#download-errors').click(downloadErrors);
-//    $('#brandFile').on('change', updateFileName)
-//}
-//
-//$(document).ready(init);
-//$(document).ready(getBrandList);

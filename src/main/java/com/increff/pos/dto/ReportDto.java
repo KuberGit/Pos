@@ -67,6 +67,7 @@ public class ReportDto {
 
     private String convertDate(String dateYYYYMMDD)
     {
+        if(dateYYYYMMDD == "") return "";
         String dateArr[] = dateYYYYMMDD.split("-");
         String dateDDMMYYYY = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
         return dateDDMMYYYY;
@@ -74,7 +75,6 @@ public class ReportDto {
     public List<SalesReportData> getSalesReport(SalesReportForm salesReportForm) throws ParseException, ApiException {
         salesReportForm.startdate = convertDate(salesReportForm.getStartdate());
         salesReportForm.enddate =convertDate(salesReportForm.getEnddate());
-
                 List<Integer> orderIds = getOrderIds(salesReportForm);
         BrandForm brandForm = ConvertUtil.convertSalesReportFormtoBrandForm(salesReportForm);
         List<BrandPojo> brandMasterPojoList = brandService.searchBrandCategoryData(brandForm);
@@ -92,7 +92,6 @@ public class ReportDto {
                 .map(o -> ConvertUtil.convertToSalesReportData(o,
                         brandService.get(productService.get(o.getProductId()).getBrandCategoryId())))
                 .collect(Collectors.toList());
-
         return reportService.groupSalesReportDataCategoryWise(salesReportData);
     }
 
@@ -110,7 +109,7 @@ public class ReportDto {
         return dailySalesService.getAll();
     }
 
-    @Scheduled(cron = "0 13 16 * * ?")
+    @Scheduled(cron = "0 0 12 * * ?")
     @Transactional(rollbackOn = ApiException.class)
     public void saveDailySales() throws ApiException {
         DailySalesPojo p = new DailySalesPojo();

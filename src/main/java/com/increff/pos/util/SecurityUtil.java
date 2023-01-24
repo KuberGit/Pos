@@ -2,6 +2,7 @@ package com.increff.pos.util;
 
 import javax.servlet.http.HttpSession;
 
+import com.increff.pos.model.UserPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

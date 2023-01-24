@@ -3,6 +3,11 @@ function getUserUrl(){
    return baseUrl + "/api/admin/user";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
 function getUserList(){
    var url = getUserUrl();
    $.ajax({

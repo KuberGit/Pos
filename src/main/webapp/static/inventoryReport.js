@@ -3,6 +3,11 @@ function getInventoryReportUrl(){
 	return baseUrl + "/api/inventory-report";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
 function getInventoryList(){
 	var url = getInventoryReportUrl();
 	// call api

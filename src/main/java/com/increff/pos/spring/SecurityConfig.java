@@ -19,22 +19,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http//
-				// Match only these URLs
-				.requestMatchers()//
+		http.requestMatchers()
+				// Remove Auth for testing
 				.antMatchers("/api/**")//
 				.antMatchers("/ui/**")//
 				.and().authorizeRequests()//
-				.antMatchers(HttpMethod.POST,"/api/reports/sales").hasAnyAuthority("supervisor", "operator")
-				.antMatchers(HttpMethod.POST,"/api/orders").hasAnyAuthority("supervisor", "operator")
-				.antMatchers(HttpMethod.PUT,"/api/orders/**").hasAnyAuthority("supervisor", "operator")
-				.antMatchers(HttpMethod.POST,"/api/**").hasAuthority("supervisor")
-				.antMatchers(HttpMethod.PUT,"/api/**").hasAuthority("supervisor")
+				.antMatchers(HttpMethod.POST, "/api/sales-report").hasAnyAuthority("supervisor", "operator")//
+				.antMatchers(HttpMethod.POST, "/api/**").hasAuthority("supervisor")//
+				.antMatchers(HttpMethod.PUT, "/api/**").hasAuthority("supervisor")//
 				.antMatchers("/api/admin/**").hasAuthority("supervisor")//
 				.antMatchers("/api/**").hasAnyAuthority("supervisor", "operator")//
 				.antMatchers("/ui/admin/**").hasAuthority("supervisor")//
 				.antMatchers("/ui/**").hasAnyAuthority("supervisor", "operator")//
-				.and().formLogin().loginPage("/site/login")
+				.and().formLogin().loginPage("/site/login.html")//
 				// Ignore CSRF and CORS
 				.and().csrf().disable().cors().disable();
 		logger.info("Configuration complete");

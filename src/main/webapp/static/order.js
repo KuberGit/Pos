@@ -15,6 +15,13 @@ function getInventoryUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/inventory";
 }
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
+$('#nav-orders').addClass('active');
+
 	// Global variables
 var $tbody = $('#customer-order-table').find('tbody');
 var $totalItems=$('#totalItems');
@@ -297,10 +304,11 @@ function displayOrderList(data){
 		var n = 1;
 		for(var i in data){
 			var e = data[i];
-			if(e.isInvoiceCreated == 1){
-			   var buttonHtml =' <button class="btn btn-danger disabled" ><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
-			}else{
-			   var buttonHtml =' <button class="btn btn-outline-success" onclick="editOrder(' + n + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
+			var buttonHtml = '';
+			if(e.isInvoiceCreated == 1 && getRole() === "supervisor"){
+			   buttonHtml =' <button class="btn btn-danger disabled" ><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
+			}else if(getRole() === "supervisor"){
+			   buttonHtml =' <button class="btn btn-outline-success" onclick="editOrder(' + n + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 			}
 			buttonHtml+=' <button class="btn btn-outline-primary" onclick="viewOrder(' + e.id + ')"><i class="fa fa-info fa-lg" aria-hidden="true"></i></button>'
 			buttonHtml+=' <button class="btn btn-outline-success" onclick="generateInvoice(' + e.id + ')"><i class="fa fa-file-invoice fa-lg" aria-hidden="true"></i></button>'

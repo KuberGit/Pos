@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.increff.pos.service.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.increff.pos.model.InfoData;
 import com.increff.pos.model.LoginForm;
 import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;
 import com.increff.pos.util.SecurityUtil;
-import com.increff.pos.util.UserPrincipal;
+import com.increff.pos.model.UserPrincipal;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -53,22 +53,26 @@ public class LoginController {
 		SecurityUtil.createContext(session);
 		// Attach Authentication object to the Security Context
 		SecurityUtil.setAuthentication(authentication);
-
+		System.out.println(info.getEmail() + "hi");
 		return new ModelAndView("redirect:/ui/home");
-
 	}
 
 	@RequestMapping(path = "/session/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().invalidate();
-		return new ModelAndView("redirect:/site/logout");
+		return new ModelAndView("redirect:/site/login");
 	}
 
-	private static Authentication convert(UserPojo p) {
+	private Authentication convert(UserPojo p) {
 		// Create principal
 		UserPrincipal principal = new UserPrincipal();
 		principal.setEmail(p.getEmail());
 		principal.setId(p.getId());
+
+		System.out.println(principal.getEmail());
+
+		info.setEmail(p.getEmail());
+		info.setRole(p.getRole());
 
 		// Create Authorities
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();

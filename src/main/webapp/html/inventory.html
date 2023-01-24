@@ -38,9 +38,9 @@
                         <div class="form-group">
                             <button type="button" class="btn btn-outline-info" id="search-inventory">Search</button>
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-primary" id="show-add-inventory-modal">Add</button>
+                            <button type="button" class="btn btn-outline-primary" id="show-add-inventory-modal" th:if="${info.getRole() == 'supervisor'}">Add</button>
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-success" id="upload-inventory-data">Upload</button>
+                            <button type="button" class="btn btn-outline-success" id="upload-inventory-data" th:if="${info.getRole() == 'supervisor'}">Upload</button>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                     <th scope="col">Barcode</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Quantity</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" th:if="${info.getRole() == 'supervisor'}">Action</th>
                 </tr>
                 </thead>
                 <tbody>

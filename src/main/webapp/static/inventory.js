@@ -4,6 +4,12 @@ function getInventoryUrl(){
 	return baseUrl + "/api/inventory";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
+$('#nav-inventory').addClass('active');
 //BUTTON ACTIONS
 
 
@@ -182,7 +188,10 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditInventory(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
+		var buttonHtml = '';
+        if(getRole() === "supervisor" ){
+            buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditInventory(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
+        }
 		var row = '<tr>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.name + '</td>'

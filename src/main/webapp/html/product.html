@@ -54,9 +54,9 @@
                         <div class="form-group">
                             <button type="button" class="btn btn-outline-info" id="search-product">Search</button>
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-primary" id="show-add-product-modal">Add</button>
+                            <button type="button" class="btn btn-outline-primary" id="show-add-product-modal" th:if="${info.getRole() == 'supervisor'}">Add</button>
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-success" id="upload-product-data">Upload</button>
+                            <button type="button" class="btn btn-outline-success" id="upload-product-data" th:if="${info.getRole() == 'supervisor'}">Upload</button>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">MRP (INR)</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" th:if="${info.getRole() == 'supervisor'}">Action</th>
                 </tr>
                 </thead>
                 <tbody>

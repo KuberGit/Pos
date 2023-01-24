@@ -3,6 +3,11 @@ function getDaySalesReportUrl(){
 	return baseUrl + "/api/daySales-report";
 }
 
+function getRole() {
+   var role = $("meta[name=role]").attr("content")
+   return role;
+}
+
 function getDaySalesList(){
 	var url = getDaySalesReportUrl();
 	// call api
