@@ -1,5 +1,6 @@
 package com.increff.pos.controller;
 
+import com.increff.pos.controller.AbstractUiController;
 import com.increff.pos.model.InfoData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,26 @@ import org.springframework.web.servlet.ModelAndView;
 public class AppUiController extends AbstractUiController {
 
     @Autowired
-    private InfoData infodata;
+    private InfoData infoData;
+
+    @RequestMapping(value = "")
+    public ModelAndView index() {
+        if (!infoData.getEmail().isEmpty()) {
+            return new ModelAndView("redirect:/ui/home");
+        }
+        infoData.setMessage("");
+        return mav("index.html");
+    }
+
+    @RequestMapping(value = "/site/login")
+    public ModelAndView login() {
+        if(!infoData.getEmail().isEmpty()) {
+            return new ModelAndView("redirect:/ui/home");
+        }
+        infoData.setMessage("");
+        return mav("login.html");
+    }
+
     @RequestMapping(value = "/ui/home")
     public ModelAndView home() {
         return mav("home.html");
@@ -32,9 +52,13 @@ public class AppUiController extends AbstractUiController {
     }
 
     @RequestMapping(value = "/ui/order")
-    public ModelAndView orders() {
-        System.out.println(infodata.getRole());
+    public ModelAndView order() {
         return mav("order.html");
+    }
+
+    @RequestMapping(value = "/ui/admin")
+    public ModelAndView user() {
+        return mav("user.html");
     }
 
     @RequestMapping(value = "/ui/report")
@@ -48,7 +72,7 @@ public class AppUiController extends AbstractUiController {
     }
 
     @RequestMapping(value = "/ui/report/brandReport")
-    public ModelAndView brandsReport() {
+    public ModelAndView brandReport() {
         return mav("brandReport.html");
     }
 
@@ -58,13 +82,7 @@ public class AppUiController extends AbstractUiController {
     }
 
     @RequestMapping(value = "/ui/report/daySalesReport")
-    public ModelAndView dailyReport() {
+    public ModelAndView dailySalesReport() {
         return mav("daySalesReport.html");
     }
-
-    @RequestMapping(value = "/ui/admin")
-    public ModelAndView admin() {
-        return mav("user.html");
-    }
-
 }

@@ -22,20 +22,21 @@ public abstract class AbstractUiController {
 
 		// Get current user
 		UserPrincipal principal = SecurityUtil.getPrincipal();
-		System.out.println(principal.getEmail() + "yo");
+
+//		if(principal.getEmail() == null)
+//		{
+//			System.out.println("null principal");
+//		}
+
 		String email = principal == null ? "" : principal.getEmail();
 		info.setEmail(email);
-		System.out.println(info.getEmail());
 
 		String role = getRole();
 		info.setRole(role);
-		System.out.println(info.getRole());
 
 		// Set info
 		ModelAndView mav = new ModelAndView(page);
 		mav.addObject("info", info);
-		mav.addObject("email", info.getEmail());
-		mav.addObject("role", info.getRole());
 		mav.addObject("baseUrl", baseUrl);
 		return mav;
 	}

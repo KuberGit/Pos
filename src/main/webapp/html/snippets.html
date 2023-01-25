@@ -1,11 +1,10 @@
-<head th:fragment="name_head">
+<head th:fragment="name_head" xmlns:th="http://www.w3.org/1999/xhtml">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="baseUrl" th:attr="content=${baseUrl}">
-    <meta name="role" th:attr="content=${role}">
-    <meta name="email" th:attr="content=${email}">
+    <meta name="role" th:attr="content=${info.getRole()}">
     <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -73,11 +72,11 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="navbar-text" style="font-weight: bold;">
-                ([[${role}]])
+                ([[${info.getRole()}]])
                 &nbsp;
             </li>
             <li class="navbar-text">
-                [[${email}]]
+                [[${info.getEmail()}]]
                 &nbsp;&gt;&nbsp;
             </li>
             <li class="nav-item">
