@@ -130,9 +130,9 @@ public class OrderDto {
         List<OrderPojo> list = orderService.getAll();
         // map OrderPojo to OrderData
         return list.stream()
-                .map(o -> {
+                .map(orderPojo -> {
                     try {
-                        return ConvertUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId()));
+                        return ConvertUtil.convertOrderPojotoOrderData(orderPojo, orderItemService.getByOrderId(orderPojo.getId()));
                     } catch (ApiException e) {
                         e.printStackTrace();
                         OrderData p = new OrderData();

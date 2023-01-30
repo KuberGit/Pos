@@ -7,6 +7,7 @@ import com.increff.pos.model.SalesReportForm;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.*;
 import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.util.NormalizeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,7 @@ public class ReportDto {
     private DailySalesService dailySalesService;
 
     public List<BrandForm> getBrandReport(BrandForm form){
+        NormalizeUtil.normalizeBrandForm(form);
         List<BrandPojo> list = brandService.searchBrandCategoryData(form);
         List<BrandForm> reqList = new ArrayList<BrandForm>();
         for(BrandPojo p:list){
@@ -77,6 +79,7 @@ public class ReportDto {
         salesReportForm.enddate =convertDate(salesReportForm.getEnddate());
                 List<Integer> orderIds = getOrderIds(salesReportForm);
         BrandForm brandForm = ConvertUtil.convertSalesReportFormtoBrandForm(salesReportForm);
+        NormalizeUtil.normalizeBrandForm(brandForm);
         List<BrandPojo> brandMasterPojoList = brandService.searchBrandCategoryData(brandForm);
         List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
         // filter using brandId list and map to product id list

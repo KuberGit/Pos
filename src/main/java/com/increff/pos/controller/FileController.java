@@ -48,7 +48,6 @@ public class FileController {
     @RequestMapping(value = "/upload/file", method = RequestMethod.POST)
     public UploadProgressData uploadFileHandler(HttpServletRequest req, HttpServletResponse resp) throws ApiException {
         MultipartHttpServletRequest multipartReq = (MultipartHttpServletRequest) req;
-        System.out.println(Arrays.asList(multipartReq.getFileMap()));
         MultipartFile file = multipartReq.getFile("temp");
         String tsvType = req.getParameter("type");
 

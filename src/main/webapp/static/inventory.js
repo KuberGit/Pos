@@ -9,7 +9,7 @@ function getRole() {
    return role;
 }
 
-$('#nav-inventory').addClass('active');
+
 //BUTTON ACTIONS
 
 
@@ -61,9 +61,12 @@ function addInventory(event){
 			'Content-Type': 'application/json'
 		},
 		success: function(response) {
+		    $('#inputName').val("");
+		    $('#inputBarcode').val("");
 			$('#add-inventory-modal').modal('toggle');
 	   		$.notify("Inventory added successfully !!","success");
 	   		searchInventory();
+	   		document.getElementById("download-errors-inventory").disabled = true;
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -76,7 +79,7 @@ function updateInventory(event){
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
 	var url = getInventoryUrl() + "/" + id;
-var quantity=$('#inventory-edit-form input[name=quantity]').val();
+    var quantity=$('#inventory-edit-form input[name=quantity]').val();
 	if(quantity<0){
 		$.notify("Quantity can not be negative !!","error");
 		return false;
@@ -123,10 +126,45 @@ var fileData = [];
 var errorData = [];
 var processCount = 0;
 
+document.getElementById("download-errors-inventory").disabled = true;
 
-function processDataInventory(){
+function processData(){
 	var file = $('#inventoryFile')[0].files[0];
-	readFileData(file, readFileDataCallbackInventory);
+	if (!file) {
+	    $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify('No file selected', 'error');
+        return;
+    }
+	// readFileData(file, readFileDataCallback);
+	url = "/pos/upload/file"
+	var data = new FormData();
+	data.append("temp", file);
+	data.append("type", "inventory");
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: data,
+		contentType: false,
+		processData: false,
+		success: function(res) {
+		console.log(res.totalCount);
+			$("#rowCountInventory").text(res.totalCount);
+            $("#processCountInventory").text(res.successCount);
+            $("#errorCountInventory").text(res.errorCount);
+            if (res.errorCount > 0) {
+                document.getElementById("download-errors-inventory").disabled = false;
+            }
+            $('.notifyjs-wrapper').trigger('notify-hide');
+            $.notify("Successfully updated inventory items!", 'success');
+            searchInventory();
+		},
+		error: function(res) {
+			console.log("error: "+ res.responseText);
+			$('.notifyjs-wrapper').trigger('notify-hide');
+			$.notify(res.responseJSON.message, 'error');
+		}
+	})
 }
 
 function readFileDataCallbackInventory(results){
@@ -137,16 +175,14 @@ function readFileDataCallbackInventory(results){
 		$.notify("File Contains more than 5000 rows !!","error");
 		return;
 	}
-	uploadRowsInventory();
+	uploadRows();
 }
 
-function uploadRowsInventory(){
+function uploadRows(){
 	//Update progress
-	updateUploadDialogInventory();
+	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
-		$.notify("File processed successfully !!","success");
-	   	searchInventory();
 		return;
 	}
 
@@ -159,26 +195,34 @@ function uploadRowsInventory(){
 
 	//Make ajax call
 	$.ajax({
-		url: url,
-		type: 'POST',
-		data: json,
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		success: function(response) {
-			uploadRowsInventory();
-		},
-		error: function(response){
-			row.error=response.responseText
-			errorData.push(row);
-			uploadRowsInventory();
-		}
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRows();
+	   },
+	   error: function(response){
+	   		row.error=response.responseText
+	   		errorData.push(row);
+	   		uploadRows();
+	   }
 	});
 
 }
 
-function downloadErrorsInventory(){
-	writeFileData(errorData);
+function downloadErrors(){
+	var url = "/pos/download/error";
+    $.ajax({
+       url: url,
+       type: 'GET',
+       success: function(data) {
+            writeFileData(data);
+       },
+       error: handleAjaxError
+    });
 }
 
 //UI DISPLAY METHODS
@@ -190,7 +234,7 @@ function displayInventoryList(data){
 		var e = data[i];
 		var buttonHtml = '';
         if(getRole() === "supervisor" ){
-            buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditInventory(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
+            buttonHtml = ' <button title="Edit" class="btn btn-outline-success" onclick="displayEditInventory(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
         }
 		var row = '<tr>'
 		+ '<td>' + e.barcode + '</td>'
@@ -216,7 +260,7 @@ function displayEditInventory(id){
 	});
 }
 
-function resetUploadDialogInventory(){
+function resetUploadDialog(){
 	//Reset file name
 	var $file = $('#inventoryFile');
 	$file.val('');
@@ -226,24 +270,25 @@ function resetUploadDialogInventory(){
 	fileData = [];
 	errorData = [];
 	//Update counts
-	updateUploadDialogInventory();
+	updateUploadDialog();
 }
 
 // update data
-function updateUploadDialogInventory(){
+function updateUploadDialog(){
 	$('#rowCountInventory').html("" + fileData.length);
 	$('#processCountInventory').html("" + processCount);
 	$('#errorCountInventory').html("" + errorData.length);
+	if(errorData.length != 0) document.getElementById("download-errors-inventory").disabled = false;
 }
 
-function updateFileNameInventory(){
+function updateFileName(){
 	var $file = $('#inventoryFile');
 	var fileName = $file.val();
 	$('#inventoryFileName').html(fileName);
 }
 
-function displayUploadDataInventory(){
-	resetUploadDialogInventory();
+function displayUploadData(){
+	resetUploadDialog();
 	$('#upload-inventory-modal').modal('toggle');
 }
 
@@ -257,15 +302,18 @@ function displayInventory(data){
 
 function showAddInventoryModal(){
 	$('#add-inventory-modal').modal('toggle');
+	$("#inventory-add-form input[name=barcode]").val($("#inputBarcode").val());
 }
 //INITIALIZATION CODE
 function init(){
+
+    $('#nav-inventory').addClass('active');
 	$('#show-add-inventory-modal').click(showAddInventoryModal);
 	$('#search-inventory').click(searchInventory);
-	$('#upload-inventory-data').click(displayUploadDataInventory);
-	$('#process-data-inventory').click(processDataInventory);
-	$('#download-errors-inventory').click(downloadErrorsInventory);
-	$('#inventoryFile').on('change', updateFileNameInventory);
+	$('#upload-inventory-data').click(displayUploadData);
+	$('#process-data-inventory').click(processData);
+	$('#download-errors-inventory').click(downloadErrors);
+	$('#inventoryFile').on('change', updateFileName);
 }
 
 $(document).ready(init);

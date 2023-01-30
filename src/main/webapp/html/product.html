@@ -52,11 +52,11 @@
                     </div>
                     <div class="col-3">
                         <div class="form-group">
-                            <button type="button" class="btn btn-outline-info" id="search-product">Search</button>
+                            <button title="Search" type="button" class="btn btn-outline-info" id="search-product">Search</button>
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-primary" id="show-add-product-modal" th:if="${info.getRole() == 'supervisor'}">Add</button>
+                            <button title="Add" type="button" class="btn btn-outline-primary" id="show-add-product-modal" th:if="${info.getRole() == 'supervisor'}">Add</button>
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-success" id="upload-product-data" th:if="${info.getRole() == 'supervisor'}">Upload</button>
+                            <button title="Upload" type="button" class="btn btn-outline-success" id="upload-product-data" th:if="${info.getRole() == 'supervisor'}">Upload</button>
                         </div>
                     </div>
                 </div>
@@ -103,13 +103,12 @@
 
 
     <!-- Add Product Model -->
-    <div
-            class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" title="Close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -144,8 +143,8 @@
                         <input type="hidden" name="id" >
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="add-product">Add</button>
+                        <button title="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button title="Add" type="submit" class="btn btn-primary" id="add-product">Add</button>
                     </div>
                 </form>
             </div>
@@ -162,7 +161,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" title="Close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -197,8 +196,8 @@
                         <input type="hidden" name="id" >
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="update-product">Update</button>
+                        <button type="button" title="Cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" title="Update" class="btn btn-primary" id="update-product">Update</button>
                     </div>
                 </form>
             </div>
@@ -213,7 +212,7 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title">Upload Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" title="Close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -232,9 +231,9 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="process-data-product">Upload</button>
-                    <button type="button" class="btn btn-warning" id="download-errors-product">Download Errors</button>
+                    <button type="button" title="Cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" title="Upload" class="btn btn-primary" id="process-data-product">Upload</button>
+                    <button type="button" title="Download Errors" class="btn btn-warning" id="download-errors-product">Download Errors</button>
                 </div>
             </div>
         </div>

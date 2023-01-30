@@ -5,6 +5,8 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.pojo.UserPojo;
+import com.increff.pos.service.ApiException;
 
 
 public class NormalizeUtil {
@@ -27,5 +29,9 @@ public class NormalizeUtil {
         f.setBarcode(StringUtil.toLowerCase(f.getBarcode()));
         f.setBrand(StringUtil.toLowerCase(f.getBrand()));
         f.setCategory(StringUtil.toLowerCase(f.getCategory()));
+    }
+
+    public static void normalizeUserPojo(UserPojo p) {
+        p.setEmail(p.getEmail().toLowerCase().trim());
     }
 }

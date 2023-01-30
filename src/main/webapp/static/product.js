@@ -48,6 +48,10 @@ function addProduct(event){
 			'Content-Type': 'application/json'
 		},
 		success: function(response) {
+		    $('#inputBrand').val("");
+		    $('#inputCategory').val("");
+		    $('#inputName').val("");
+		    $('#inputBarcode').val("");
 			$('#add-product-modal').modal('toggle');
 			$('#product-add-form').trigger("reset");
 	   		$.notify("Product added successfully !!","success");
@@ -125,7 +129,7 @@ function displayProductList(data){
 		// dynamic buttons
 		var buttonHtml = '';
         if(getRole() === "supervisor" ){
-            buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditProduct(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
+            buttonHtml = ' <button title="Edit" class="btn btn-outline-success" onclick="displayEditProduct(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
         }
 		var row = '<tr>'
 		+ '<td>' + e.barcode + '</td>'
@@ -193,6 +197,10 @@ function displayProduct(data){
 function showAddProductModal(){
 	$('#add-product-modal').modal('toggle');
 	$('#product-add-form').trigger("reset");
+	console.log($("#inputBrand").val());
+	$("#product-add-form input[name=brand]").val($("#inputBrand").val());
+    $("#product-add-form input[name=category]").val($("#inputCategory").val());
+    $("#product-add-form input[name=name]").val($("#inputName").val());
 }
 //INITIALIZATION CODE
 function init(){
@@ -230,12 +238,12 @@ function processData(){
       contentType: false,
       processData: false,
       success: function(res) {
-         console.log("Sent data");
-         console.log(res);
          $("#rowCountProduct").text(res.totalCount);
          $("#processCountProduct").text(res.successCount);
          $("#errorCountProduct").text(res.errorCount);
          if(res.errorCount != 0) document.getElementById("download-errors-product").disabled = false;
+         $('.notifyjs-wrapper').trigger('notify-hide');
+         $.notify("Successfully uploaded all valid products!", 'success');
       },
       error: function(res) {
          console.log("error: "+ res.responseText);

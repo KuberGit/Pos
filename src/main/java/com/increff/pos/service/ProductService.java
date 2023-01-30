@@ -19,7 +19,6 @@ public class ProductService {
 
     @Transactional(rollbackFor = ApiException.class)
     public ProductPojo add(ProductPojo p, BrandPojo b) throws ApiException {
-        NormalizeUtil.normalizeProductPojo(p);
         ProductPojo ex = dao.selectByBarcode(p.getBarcode());
         if(ex == null){
             dao.insert(p);
@@ -63,7 +62,6 @@ public class ProductService {
 
     @Transactional(rollbackFor = ApiException.class)
     public ProductPojo update(int id, ProductPojo p,BrandPojo b) throws ApiException {
-        NormalizeUtil.normalizeProductPojo(p);
         ProductPojo newP = check(id);
         newP.setBrandCategoryId(b.getId());
         newP.setMrp(p.getMrp());
@@ -74,7 +72,6 @@ public class ProductService {
 
     @Transactional
     public List<ProductPojo> searchProductData(ProductSearchForm f) {
-        NormalizeUtil.normalizeProductSearchForm(f);
         return dao.searchProductData(f.getBarcode(), f.getName());
     }
 

@@ -73,7 +73,6 @@ public class OrderService {
     public List<OrderPojo> getListSearch(List<OrderPojo> p , String start , String end) throws ParseException {
         List<OrderPojo> reqList = new ArrayList<OrderPojo>();
 
-//        https://www.javatpoint.com/java-string-to-date
         for(OrderPojo o:p){
             SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
             Date todayWithZeroTime = formatter.parse(formatter.format(o.getDatetime()));

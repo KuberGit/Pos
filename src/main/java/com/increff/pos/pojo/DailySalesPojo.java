@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 public class DailySalesPojo {
     @Id
-    private Date date;
+    private Date date; // todo remove from primary key and make unique key and make one more primary key column
     private int orders;
     private int items;
     private double revenue;

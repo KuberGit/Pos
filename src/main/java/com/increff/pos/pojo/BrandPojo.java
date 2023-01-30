@@ -13,7 +13,7 @@ public class BrandPojo {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(nullable = false)
     private int id;
-    private String brand;
+    private String brand; // todo check unique comb and null or not
     private String category;
 
 }

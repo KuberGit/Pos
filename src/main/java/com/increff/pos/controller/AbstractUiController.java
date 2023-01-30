@@ -23,11 +23,6 @@ public abstract class AbstractUiController {
 		// Get current user
 		UserPrincipal principal = SecurityUtil.getPrincipal();
 
-//		if(principal.getEmail() == null)
-//		{
-//			System.out.println("null principal");
-//		}
-
 		String email = principal == null ? "" : principal.getEmail();
 		info.setEmail(email);
 

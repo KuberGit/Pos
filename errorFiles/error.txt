@@ -1,1 +1,1 @@
-{"name":"vinamra","mrp":1234.0,"brand":"amul","category":"test"} :: Brand-Category doesn't exist
+{"barcode":"test","quantity":5} :: Barcode doesn't exist

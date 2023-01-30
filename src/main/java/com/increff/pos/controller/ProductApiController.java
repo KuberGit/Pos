@@ -25,7 +25,6 @@ import java.util.List;
 @RequestMapping(value = "/api/product")
 public class ProductApiController {
     @Autowired
-
     private ProductDto productDto;
 
     @ApiOperation(value = "Adds a Product")

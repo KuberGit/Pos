@@ -8,6 +8,7 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.util.NormalizeUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,10 +29,12 @@ public class BrandDto {
     public BrandPojo addBrand(BrandForm f) throws ApiException {
         checkForm(f);
         BrandPojo p = ConvertUtil.convertBrandFormtoBrandPojo(f);
+        NormalizeUtil.normalizeBrandMasterPojo(p);
         return brandService.add(p);
     }
 
     public List<BrandData> searchBrandData(BrandForm form) {
+        NormalizeUtil.normalizeBrandForm(form);
         List<BrandPojo> list = brandService.searchBrandCategoryData(form);
         List<BrandData> reqList = new ArrayList<>();
         for (BrandPojo p : list) {
@@ -57,10 +60,12 @@ public class BrandDto {
     public BrandPojo updateBrand(int id, BrandForm f) throws ApiException {
         checkForm(f);
         BrandPojo p = ConvertUtil.convertBrandFormtoBrandPojo(f);
+        NormalizeUtil.normalizeBrandMasterPojo(p);
         return brandService.update(id, p);
     }
 
     public BrandPojo getByBrandCategory(BrandForm f) throws ApiException {
+        NormalizeUtil.normalizeBrandForm(f);
         return brandService.getByBrandCategory(f);
     }
 
@@ -80,7 +85,7 @@ public class BrandDto {
         private String errorMessage;
     }
 
-    public UploadProgressData addBrandCategoryFromFile(FileReader file) {
+    public UploadProgressData addBrandCategoryFromFile(FileReader file) { // todo break this function and make it transactional
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -89,7 +94,6 @@ public class BrandDto {
                     .withType(BrandForm.class)
                     .build()
                     .parse();
-            System.out.println(formList.size());
             progress.setTotalCount(formList.size());
             for (BrandForm form : formList) {
                 try {

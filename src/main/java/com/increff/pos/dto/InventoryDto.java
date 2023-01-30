@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.increff.pos.model.*;
 import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.util.NormalizeUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,14 +35,16 @@ public class InventoryDto {
 
     public List<InventoryData> searchInventory(InventorySearchForm form) throws ApiException {
         ProductSearchForm productSearchForm = ConvertUtil.convertInventorySearchFormtoProductSearchForm(form);
+        NormalizeUtil.normalizeProductSearchForm(productSearchForm);
         List<ProductPojo> productMasterPojoList = productService.searchProductData(productSearchForm);
-        List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+        List<Integer> productIds = productMasterPojoList.stream().map(ProductPojo::getId).collect(Collectors.toList());
         // filter according to product id list
         List<InventoryPojo> list = inventoryService.getAll().stream()
                 .filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
         // map InventoryPojo to InventoryData
         return list.stream()
-                .map(o -> ConvertUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
+                .map(inventoryPojo -> ConvertUtil.convertInventoryPojotoInventoryData(
+                        inventoryPojo, productService.get(inventoryPojo.getProductId())))
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +66,7 @@ public class InventoryDto {
         List<InventoryPojo> list = inventoryService.getAll();
         // map InventoryPojo to InventoryData
         return list.stream()
-                .map(o -> ConvertUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
+                .map(inventoryPojo -> ConvertUtil.convertInventoryPojotoInventoryData(inventoryPojo, productService.get(inventoryPojo.getProductId())))
                 .collect(Collectors.toList());
     }
 
@@ -82,7 +85,7 @@ public class InventoryDto {
                     .withType(InventoryForm.class)
                     .build()
                     .parse();
-
+            progress.setTotalCount(formList.size());
             for (InventoryForm form : formList) {
                 try {
                     addInventory(form);

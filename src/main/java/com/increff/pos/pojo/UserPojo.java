@@ -16,7 +16,7 @@ public class UserPojo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String email;
+	private String email; // todo unique comb of email and pass
 	private String password;
 	private String role;
 

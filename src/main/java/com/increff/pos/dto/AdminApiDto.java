@@ -6,6 +6,7 @@ import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;
 import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class AdminApiDto {
     public void add(UserForm userForm) throws ApiException {
         validateForm(userForm);
         UserPojo user = ConvertUtil.convertFormToPojo(userForm);
+        NormalizeUtil.normalizeUserPojo(user);
         userService.add(user);
     }
 

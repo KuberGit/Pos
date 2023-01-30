@@ -297,7 +297,7 @@ function generateInvoice(id){
             });
 }
 
-	//UI DISPLAY METHODS
+//UI DISPLAY METHODS
 function displayOrderList(data){
 		var $tbodyOrder = $('#order-table').find('tbody');
 		$tbodyOrder.empty();
@@ -306,15 +306,15 @@ function displayOrderList(data){
 			var e = data[i];
 			var buttonHtml = '';
 			if(e.isInvoiceCreated == 1 && getRole() === "supervisor"){
-			   buttonHtml =' <button class="btn btn-danger disabled" ><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
+			   buttonHtml =' <button title="Edit" class="btn btn-danger disabled" ><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 			}else if(getRole() === "supervisor"){
-			   buttonHtml =' <button class="btn btn-outline-success" onclick="editOrder(' + n + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
+			   buttonHtml =' <button title="Edit" class="btn btn-outline-success" onclick="editOrder(' + n + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>'
 			}
-			buttonHtml+=' <button class="btn btn-outline-primary" onclick="viewOrder(' + e.id + ')"><i class="fa fa-info fa-lg" aria-hidden="true"></i></button>'
-			buttonHtml+=' <button class="btn btn-outline-success" onclick="generateInvoice(' + e.id + ')"><i class="fa fa-file-invoice fa-lg" aria-hidden="true"></i></button>'
+			buttonHtml+=' <button title="View Order" class="btn btn-outline-primary" onclick="viewOrder(' + e.id + ')"><i class="fa fa-info fa-lg" aria-hidden="true"></i></button>'
+			buttonHtml+=' <button title="Generate Invoice" class="btn btn-outline-success" onclick="generateInvoice(' + e.id + ')"><i class="fa fa-file-invoice fa-lg" aria-hidden="true"></i></button>'
 			var row = '<tr>'
 			+ '<td>' + n + '</td>'
-			+ '<td>' + e.datetime + '</td>'
+			+ '<td>' + Date(e.datetime).toString().split("G")[0] + '</td>'
 			+ '<td>' + e.billAmount + '</td>'
 			+ '<td>' + buttonHtml + '</td>'
 			+ '</tr>';

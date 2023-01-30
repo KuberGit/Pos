@@ -51,6 +51,8 @@ function addBrand(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
+		    $('#inputBrand').val("");
+		    $('#inputCategory').val("");
 			$('#add-brand-modal').modal('toggle');
 			$('#brand-add-form').trigger("reset");
 	   		$.notify("Brand added successfully !!","success");
@@ -111,7 +113,6 @@ var fileData = [];
 var errorData = [];
 var processCount = 0;
 
-
 document.getElementById("download-errors-brand").disabled = true;
 
 function downloadErrorsBrand(){
@@ -130,7 +131,7 @@ function displayBrandList(data){
 		// dynamic buttons
 		var buttonHtml = '';
 		if(getRole() === "supervisor" ){
-		    buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
+		    buttonHtml = ' <button title="Edit" class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>';
 		}
 		var row = '<tr>'
 		+ '<td>' + e.brand + '</td>'
@@ -166,7 +167,6 @@ function resetUploadDialogBrand(){
 	errorData = [];
 	//Update counts
 	updateUploadDialogBrand();
-
 }
 
 function updateUploadDialogBrand(){
@@ -199,6 +199,8 @@ function displayBrand(data){
 function showAddBrandModal(){
 	$('#add-brand-modal').modal('toggle');
 	$('#brand-add-form').trigger("reset");
+	$("#brand-add-form input[name=brand]").val($("#inputBrand").val());
+	$("#brand-add-form input[name=category]").val($("#inputCategory").val());
 }
 //INITIALIZATION CODE
 function init(){
@@ -213,7 +215,11 @@ function init(){
 
 function processData(){
    var file = $('#brandFile')[0].files[0];
-   console.log(file);
+   if (!file) {
+          $('.notifyjs-wrapper').trigger('notify-hide');
+          $.notify('No file selected', 'error');
+          return;
+      }
    // readFileData(file, readFileDataCallback);
    url = "/pos/upload/file"
    var data = new FormData();
@@ -228,13 +234,13 @@ function processData(){
       contentType: false,
       processData: false,
       success: function(res) {
-         console.log("Sent data");
-         console.log(res);
          $("#rowCountBrand").text(res.totalCount);
          $("#processCountBrand").text(res.successCount);
          $("#errorCountBrand").text(res.errorCount);
          if(res.errorCount != 0) document.getElementById("download-errors-brand").disabled = false;
          searchBrand();
+         $('.notifyjs-wrapper').trigger('notify-hide');
+         $.notify("Successfully uploaded all valid brand-categories!", 'success');
       },
       error: function(res) {
          console.log("error: "+ res.responseText);
@@ -247,8 +253,41 @@ function readFileDataCallback(results){
    uploadRows();
 }
 
-$('#nav-brand').addClass('active');
+function uploadRows(){
+   //Update progress
+   updateUploadDialog();
+   //If everything processed then return
+   if(processCount==fileData.length){
+      $.notify("File processed successfully !!","success");
+      return;
+   }
 
+   //Process next row
+   var row = fileData[processCount];
+   processCount++;
+
+   var json = JSON.stringify(row);
+   var url = getBrandUrl();
+
+   //Make ajax call
+   $.ajax({
+      url: url,
+      type: 'POST',
+      data: json,
+      headers: {
+           'Content-Type': 'application/json'
+       },
+      success: function(response) {
+             uploadRows();
+      },
+      error: function(response){
+             row.error=response.responseText
+             errorData.push(row);
+             uploadRows();
+      }
+   });
+
+}
 
 function downloadErrors(){
    var url = "/pos/download/error";
@@ -264,6 +303,7 @@ function downloadErrors(){
     });
 }
 
+$('#nav-brand').addClass('active');
 $(document).ready(init);
 $(document).ready(getBrandList);
 

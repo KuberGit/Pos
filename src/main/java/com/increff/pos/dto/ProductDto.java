@@ -10,6 +10,7 @@ import com.increff.pos.service.BrandService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.util.NormalizeUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,11 +34,13 @@ public class ProductDto {
 
 
     @Transactional(rollbackFor = ApiException.class)
-    public ProductPojo add(ProductForm f) throws ApiException {
+    public ProductPojo add(ProductForm f) throws ApiException { //todo create a datautil checking datatype for every input and create a index in DB for brand and category and product barcode
         validateForm(f);
         BrandForm brandForm = ConvertUtil.convertProductFormtoBrandForm(f);
+        NormalizeUtil.normalizeBrandForm(brandForm);
         BrandPojo b = brandDto.getByBrandCategory(brandForm);
         ProductPojo p = ConvertUtil.convertProductFormtoProductPojo(f,b);
+        NormalizeUtil.normalizeProductPojo(p);
         ProductPojo newP = productService.add(p,b);
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setQuantity(0);
@@ -75,8 +78,10 @@ public class ProductDto {
 
     public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
         BrandForm brandForm = ConvertUtil.convertProductSearchFormtoBrandForm(form);
+        NormalizeUtil.normalizeBrandForm(brandForm);
         List<BrandPojo> brandMasterPojoList = brandService.searchBrandCategoryData(brandForm);
         List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+        NormalizeUtil.normalizeProductSearchForm(form);
         List<ProductPojo> list = productService.searchProductData(form).stream()
                 .filter(o -> (brandIds.contains(o.getBrandCategoryId()))).collect(Collectors.toList());
         return list.stream().map(
@@ -87,8 +92,11 @@ public class ProductDto {
     public ProductPojo update(int id,ProductForm f) throws ApiException {
         validateForm(f);
         BrandForm brandForm = ConvertUtil.convertProductFormtoBrandForm(f);
+        NormalizeUtil.normalizeBrandForm(brandForm);
+        NormalizeUtil.normalizeBrandForm(brandForm);
         BrandPojo b = brandService.getByBrandCategory(brandForm);
         ProductPojo p = ConvertUtil.convertProductFormtoProductPojoU(f,b);
+        NormalizeUtil.normalizeProductPojo(p);
         return productService.update(id,p,b);
     }
 

@@ -20,6 +20,6 @@ public class OrderItemPojo {
     @Column(nullable = false)
     private int quantity;
     @Column(nullable = false)
-    private double sellingPrice;
+    private double sellingPrice; // todo use snake casing
 
 }

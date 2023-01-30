@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class BrandService {
+public class BrandService { // todo fill the values entered in search to add modal and after adding search bars should be null --> done
 
+    // todo datetime is in milliseconds --> done and add tooltips on hovering over the buttons --> done
     @Autowired
     private BrandDao dao;
 
     @Transactional
-    public BrandPojo add(BrandPojo p) throws ApiException {
-        NormalizeUtil.normalizeBrandMasterPojo(p);
+    public BrandPojo add(BrandPojo p) throws ApiException { // todo normalize in dto
         getCheckBrandCategoryExist(p.getBrand(),p.getCategory());
         dao.insert(p);
         return p;
@@ -36,13 +36,11 @@ public class BrandService {
 
     @Transactional
     public BrandPojo getByBrandCategory(BrandForm form) throws ApiException {
-        NormalizeUtil.normalizeBrandForm(form);
         return getCheckForBrandCategory(form);
     }
 
     @Transactional
     public BrandPojo update(int id, BrandPojo p) throws ApiException {
-        NormalizeUtil.normalizeBrandMasterPojo(p);
         getCheckBrandCategoryExist(p.getBrand(),p.getCategory());
         BrandPojo ex = getCheck(id);
         ex.setBrand(p.getBrand());
@@ -53,7 +51,6 @@ public class BrandService {
 
     @Transactional
     public List<BrandPojo> searchBrandCategoryData(BrandForm form) {
-        NormalizeUtil.normalizeBrandForm(form);
         return dao.searchBrandData(form.getBrand(),form.getCategory());
     }
 

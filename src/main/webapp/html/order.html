@@ -22,7 +22,7 @@
                     <div class="col-2">
                         <div class="form-group">
                             &nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-primary" id="show-add-order-modal" th:if="${info.getRole() == 'supervisor'}">Add</button>
+                            <button type="button" title="Add" class="btn btn-outline-primary" id="show-add-order-modal" th:if="${info.getRole() == 'supervisor'}">Add</button>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Order</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" title="Close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="col" style="margin:10px;">
-                                <button type="button" class="btn btn-outline-primary" id="add-item-button" style="margin-left: 20px">Add Item</button>
+                                <button type="button" title="Add Item" class="btn btn-outline-primary" id="add-item-button" style="margin-left: 20px">Add Item</button>
                             </div>
                         </div>
                     </form>
@@ -157,8 +157,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" id="create-order">Create Order</button>
+                    <button type="button" title="Cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" title="Create Order" class="btn btn-success" id="create-order">Create Order</button>
                 </div>
 
             </div>
@@ -172,7 +172,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Order</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" title="Close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -195,8 +195,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="update-inventory">Update</button>
+                        <button type="button" title="Cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" title="Update"  class="btn btn-primary" id="update-inventory">Update</button>
                     </div>
                 </form>
             </div>
@@ -211,7 +211,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">View Order</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" title="Close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -254,7 +254,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" title="Cancel"  class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
 
             </div>
@@ -268,7 +268,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Order</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" title="Close"  class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -321,7 +321,7 @@
                         <input type="hidden" name="id" >
 
                         <div class="col" style="margin:10px;">
-                            <button type="button" class="btn btn-outline-primary" id="add-item-button-edit" style="margin-left: 20px">Add Item</button>
+                            <button type="button" title="Add Item"  class="btn btn-outline-primary" id="add-item-button-edit" style="margin-left: 20px">Add Item</button>
                         </div>
                     </div>
                 </form>
@@ -367,8 +367,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="update-order">Update Order</button>
+                <button type="button" title="Cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" title="Update Order"  class="btn btn-success" id="update-order">Update Order</button>
             </div>
 
         </div>
