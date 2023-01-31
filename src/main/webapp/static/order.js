@@ -416,7 +416,7 @@ function updateQuantityInTable(barcode,table,finalQuantity){
 function addItemInTable(){
 		var barcode=$("#inputBarcode").val();
 		var quantity=$('#inputQuantity').val();
-		// validate data 
+		// validate data
 		if(barcode.length == 8){
 			if(quantity <= 0){
 				$.notify("Quantity for product can not be negative or zero !!","error");

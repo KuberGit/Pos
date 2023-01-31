@@ -46,7 +46,7 @@ public class ConvertUtil {
         ProductPojo p = new ProductPojo();
         p.setName(f.getName());
         p.setMrp(f.getMrp());
-        p.setBarcode(StringUtil.generateBarcode());
+        p.setBarcode(f.getBarcode());
         p.setBrandCategoryId(b.getId());
         return p;
     }

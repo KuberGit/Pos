@@ -32,6 +32,6 @@ public class NormalizeUtil {
     }
 
     public static void normalizeUserPojo(UserPojo p) {
-        p.setEmail(p.getEmail().toLowerCase().trim());
+        p.setEmail(p.getEmail().toLowerCase());
     }
 }

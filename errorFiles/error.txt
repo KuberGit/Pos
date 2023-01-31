@@ -1,1 +1,0 @@
-{"barcode":"test","quantity":5} :: Barcode doesn't exist

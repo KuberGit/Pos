@@ -24,9 +24,8 @@ public class ProductService {
             dao.insert(p);
             return p;
         }else{
-            String barcode = StringUtil.generateBarcode();
             ProductPojo newP = new ProductPojo();
-            newP.setBarcode(barcode);
+            newP.setBarcode(p.getBarcode());
             newP.setBrandCategoryId(b.getId());
             newP.setMrp(p.getMrp());
             newP.setName(p.getName());

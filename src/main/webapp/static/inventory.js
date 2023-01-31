@@ -79,6 +79,7 @@ function updateInventory(event){
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
 	var url = getInventoryUrl() + "/" + id;
+	console.log(url);
     var quantity=$('#inventory-edit-form input[name=quantity]').val();
 	if(quantity<0){
 		$.notify("Quantity can not be negative !!","error");
@@ -98,7 +99,8 @@ function updateInventory(event){
 		success: function(response) {
 			$('#edit-inventory-modal').modal('toggle');
 			$.notify("Inventory updated successfully !!","success");
-	   		searchInventory();
+			console.log("1");
+            searchInventory();
 	   },
 	   error: handleAjaxError
 	});

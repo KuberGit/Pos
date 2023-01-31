@@ -70,8 +70,8 @@ public class BrandDto {
     }
 
     private void checkForm(BrandForm f) throws ApiException {
-        if (f.getCategory() == null || f.getBrand() == null) {
-            throw new ApiException("No brand and category provided");
+        if (f.getCategory() == null || f.getBrand() == null || f.getCategory().trim().isEmpty() || f.getBrand().trim().isEmpty()) {
+            throw new ApiException("No brand and/or category provided");
         }
     }
 
@@ -85,7 +85,7 @@ public class BrandDto {
         private String errorMessage;
     }
 
-    public UploadProgressData addBrandCategoryFromFile(FileReader file) { // todo break this function and make it transactional
+    public UploadProgressData addBrandCategoryFromFile(FileReader file) {
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {

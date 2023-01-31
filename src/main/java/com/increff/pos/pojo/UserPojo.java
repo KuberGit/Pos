@@ -3,21 +3,25 @@ package com.increff.pos.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "users",
+		indexes = {
+				@Index(name = "email_password_idx", columnList = "email,password", unique = true)
+		})
 public class UserPojo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String email; // todo unique comb of email and pass
+	@Column(nullable = false)
+	private String email; // todo unique comb of email and pass --> done
+	@Column(nullable = false)
 	private String password;
+	@Column(nullable = false)
 	private String role;
 
 }

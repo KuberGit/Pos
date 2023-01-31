@@ -8,13 +8,13 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"productId"})}) // name unique constraint
+@Table(name = "inventory" , uniqueConstraints={@UniqueConstraint(columnNames={"product_id"})})
 public class InventoryPojo {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(nullable = false)
     private int id;
-    @Column(nullable = false)
+    @Column(name = "product_id", nullable = false)
     private int productId;
     @Column(nullable = false)
     private int quantity;

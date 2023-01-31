@@ -34,10 +34,10 @@ public class OrderDto {
     public List<BillData> createOrder(OrderItemForm[] orderItemForms) throws ApiException {
         List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
         OrderPojo orderPojo = addOrder(orderItems);
-        List<OrderItemPojo> list = orderItems.stream().map(o -> {
+        List<OrderItemPojo> list = orderItems.stream().map(productPojo -> {
             try {
-                return ConvertUtil.convertOrderItemFormToOrderItemPojo(o,
-                        orderPojo, productService.getByBarcode(o.barcode));
+                return ConvertUtil.convertOrderItemFormToOrderItemPojo(productPojo,
+                        orderPojo, productService.getByBarcode(productPojo.barcode));
             } catch (ApiException e) {
                 e.printStackTrace();
                 OrderItemPojo p = new OrderItemPojo();

@@ -20,8 +20,6 @@ public class OrderItemDao extends AbstractDao {
     // select list by order id
     private static String selectByOrderIdList = "select p from OrderItemPojo p where orderId IN:orderIds";
 
-    // todo https://storage.googleapis.com/www.increff.com/img/favicon.png?v=2
-
     // <queryFunctions>
     // function to select by order id
     public List<OrderItemPojo> selectByOrderId(int orderId){

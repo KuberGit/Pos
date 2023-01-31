@@ -8,12 +8,17 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "brand_categories",
+        indexes = {
+                @Index(name = "brand_category_idx", columnList = "brand,category", unique = true)
+        })
 public class BrandPojo {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(nullable = false)
     private int id;
-    private String brand; // todo check unique comb and null or not
+    @Column(nullable = false)
+    private String brand; // todo check unique comb --> done and null or not --> done
+    @Column(nullable = false)
     private String category;
 
 }

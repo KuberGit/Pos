@@ -18,7 +18,7 @@ public class BrandService { // todo fill the values entered in search to add mod
     private BrandDao dao;
 
     @Transactional
-    public BrandPojo add(BrandPojo p) throws ApiException { // todo normalize in dto
+    public BrandPojo add(BrandPojo p) throws ApiException { // todo normalize in dto --> done
         getCheckBrandCategoryExist(p.getBrand(),p.getCategory());
         dao.insert(p);
         return p;

@@ -38,7 +38,6 @@ function addProduct(event){
 	var $form = $("#product-add-form");
 	var json = toJson($form);
 	var url = getProductUrl();
-	console.log(url);
 	// call api
 	$.ajax({
 		url: url,
