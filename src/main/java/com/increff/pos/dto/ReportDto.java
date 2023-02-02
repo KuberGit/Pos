@@ -6,8 +6,8 @@ import com.increff.pos.model.SalesReportData;
 import com.increff.pos.model.SalesReportForm;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.*;
-import com.increff.pos.util.ConvertUtil;
-import com.increff.pos.util.NormalizeUtil;
+import com.increff.pos.utils.ConvertUtil;
+import com.increff.pos.utils.NormalizeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -92,8 +92,14 @@ public class ReportDto {
                 .collect(Collectors.toList());
         // map to sales report data
         List<SalesReportData> salesReportData = listOfOrderItemPojos.stream()
-                .map(o -> ConvertUtil.convertToSalesReportData(o,
-                        brandService.get(productService.get(o.getProductId()).getBrandCategoryId())))
+                .map(o -> {
+                    try {
+                        return ConvertUtil.convertToSalesReportData(o,
+                                brandService.get(productService.get(o.getProductId()).getBrandCategoryId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
         return reportService.groupSalesReportDataCategoryWise(salesReportData);
     }

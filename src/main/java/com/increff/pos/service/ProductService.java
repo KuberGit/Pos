@@ -4,8 +4,7 @@ import com.increff.pos.dao.ProductDao;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.util.StringUtil;
-import com.increff.pos.util.NormalizeUtil;
+import com.increff.pos.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +33,12 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductPojo get(int id) {
-        return dao.select(ProductPojo.class,id);
+    public ProductPojo get(int id) throws ApiException{
+        ProductPojo p = dao.select(ProductPojo.class,id);
+        if(p == null) {
+            throw new ApiException("Product with given ID does not exist, id: "+ id);
+        }
+        return p;
     }
 
 

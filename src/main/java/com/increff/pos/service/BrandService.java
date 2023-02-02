@@ -3,7 +3,6 @@ package com.increff.pos.service;
 import com.increff.pos.dao.BrandDao;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.util.NormalizeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +24,13 @@ public class BrandService { // todo fill the values entered in search to add mod
     }
 
     @Transactional(readOnly = true)
-    public BrandPojo get(int id) {
-        return dao.select(BrandPojo.class,id);
+    public BrandPojo get(int id) throws ApiException { // todo add a edge case where id is not in db --> done
+        try {
+            return getCheck(id);
+        }
+        catch (ApiException e) {
+            throw new ApiException(e.getMessage());
+        }
     }
 
     @Transactional

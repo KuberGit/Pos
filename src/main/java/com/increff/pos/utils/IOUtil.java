@@ -1,4 +1,4 @@
-package com.increff.pos.util;
+package com.increff.pos.utils;
 
 import java.io.Closeable;
 import java.io.IOException;

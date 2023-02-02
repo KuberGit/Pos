@@ -22,7 +22,7 @@ import com.increff.pos.model.InfoData;
 import com.increff.pos.model.LoginForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.UserService;
-import com.increff.pos.util.SecurityUtil;
+import com.increff.pos.utils.SecurityUtil;
 import com.increff.pos.model.UserPrincipal;
 
 import io.swagger.annotations.ApiOperation;

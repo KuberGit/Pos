@@ -10,9 +10,9 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
-import com.increff.pos.util.ConvertUtil;
-import com.increff.pos.util.NormalizeUtil;
-import com.increff.pos.util.StringUtil;
+import com.increff.pos.utils.ConvertUtil;
+import com.increff.pos.utils.NormalizeUtil;
+import com.increff.pos.utils.StringUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -62,7 +62,7 @@ public class ProductDto {
     }
 
     @Transactional
-    public List<ProductData> getAll(){
+    public List<ProductData> getAll() throws ApiException {
         List<ProductPojo> pList = productService.getAll();
         List<ProductData> reqList = new ArrayList<>();
         for(ProductPojo p:pList){
@@ -91,12 +91,18 @@ public class ProductDto {
         List<ProductPojo> list = productService.searchProductData(form).stream()
                 .filter(productPojo -> (brandIds.contains(productPojo.getBrandCategoryId()))).collect(Collectors.toList());
         return list.stream().map(
-                        productPojo -> ConvertUtil.convertProductPojotoProductData(productPojo, brandService.get(productPojo.getBrandCategoryId())))
+                        productPojo -> {
+                            try {
+                                return ConvertUtil.convertProductPojotoProductData(productPojo, brandService.get(productPojo.getBrandCategoryId()));
+                            } catch (ApiException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
                 .collect(Collectors.toList());
     }
 
     public ProductPojo update(int id,ProductForm f) throws ApiException {
-        validateForm(f);
+        validateFormUpdate(f);
         BrandForm brandForm = ConvertUtil.convertProductFormtoBrandForm(f);
         NormalizeUtil.normalizeBrandForm(brandForm);
         NormalizeUtil.normalizeBrandForm(brandForm);
@@ -123,6 +129,21 @@ public class ProductDto {
         ProductPojo p = dao.selectByBarcode(barcode);
         if(p != null){
             throw new ApiException("Barcode already exists");
+        }
+    }
+
+    private void validateFormUpdate(ProductForm b) throws ApiException {
+        if (b.getName() == null) {
+            throw new ApiException("Please Enter Name");
+        }
+        if (b.getMrp() <= 0) {
+            throw new ApiException("Please Enter a positive mrp!");
+        }
+        if (b.getBarcode().length() < 8) {
+            throw new ApiException("Please Enter a valid barcode");
+        }
+        if(!isValidBarcode(b.getBarcode())) {
+            throw new ApiException("Please Enter a valid barcode!");
         }
     }
 

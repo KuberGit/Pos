@@ -5,9 +5,9 @@ import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;
-import com.increff.pos.util.ConvertUtil;
-import com.increff.pos.util.NormalizeUtil;
-import com.increff.pos.util.StringUtil;
+import com.increff.pos.utils.ConvertUtil;
+import com.increff.pos.utils.NormalizeUtil;
+import com.increff.pos.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

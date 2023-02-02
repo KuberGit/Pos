@@ -11,7 +11,7 @@ import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.dto.ProductDto;
 import com.increff.pos.model.UploadProgressData;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.util.FileUtil;
+import com.increff.pos.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;

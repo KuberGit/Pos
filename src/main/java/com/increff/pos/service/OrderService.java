@@ -49,7 +49,7 @@ public class OrderService {
             ProductPojo p = productService.getByBarcode(i.barcode);
             InventoryPojo iP = inventoryService.getByProductId(p);
             if(orderQuantity > iP.getQuantity()){
-                throw new ApiException("Required number of " + orderQuantity + " of " + i.barcode + "doesn't exists");
+                throw new ApiException("Required number of " + orderQuantity + " of " + i.barcode + " doesn't exists");
             }
         }
     }

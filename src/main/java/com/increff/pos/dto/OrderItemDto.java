@@ -5,7 +5,7 @@ import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderItemService;
 import com.increff.pos.service.ProductService;
-import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,13 @@ public class OrderItemDto {
         List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderId);
         // map OrderItemPojo to OrderItemData
         return orderItemPojoList.stream()
-                .map(o -> ConvertUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+                .map(o -> {
+                    try {
+                        return ConvertUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 

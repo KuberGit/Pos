@@ -6,7 +6,7 @@ import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.OrderSearchForm;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.util.GeneratePDF;
+import com.increff.pos.utils.GeneratePDF;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Setter;

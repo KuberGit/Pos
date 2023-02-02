@@ -7,8 +7,8 @@ import com.increff.pos.model.UploadProgressData;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
-import com.increff.pos.util.ConvertUtil;
-import com.increff.pos.util.NormalizeUtil;
+import com.increff.pos.utils.ConvertUtil;
+import com.increff.pos.utils.NormalizeUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,7 +43,7 @@ public class BrandDto {
         return reqList;
     }
 
-    public BrandData getBrandData(int id) {
+    public BrandData getBrandData(int id) throws ApiException {
         return ConvertUtil.convertBrandPojotoBrandData(brandService.get(id));
     }
 

@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.increff.pos.model.*;
-import com.increff.pos.util.ConvertUtil;
-import com.increff.pos.util.NormalizeUtil;
+import com.increff.pos.utils.ConvertUtil;
+import com.increff.pos.utils.NormalizeUtil;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,13 +43,26 @@ public class InventoryDto {
                 .filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
         // map InventoryPojo to InventoryData
         return list.stream()
-                .map(inventoryPojo -> ConvertUtil.convertInventoryPojotoInventoryData(
-                        inventoryPojo, productService.get(inventoryPojo.getProductId())))
+                .map(inventoryPojo -> {
+                    try {
+                        return ConvertUtil.convertInventoryPojotoInventoryData(
+                                inventoryPojo, productService.get(inventoryPojo.getProductId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
     public InventoryData getInventoryData(int id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryService.get(id);
+        ProductPojo productPojo = productService.get(inventoryPojo.getProductId());
+        return ConvertUtil.convertInventoryPojotoInventoryData(inventoryPojo, productPojo);
+    }
+
+    public InventoryData getInventoryDataByBarcode(String barcode) throws ApiException {
+        ProductPojo productMasterPojo = productService.getByBarcode(barcode);
+        InventoryPojo inventoryPojo = inventoryService.get(productMasterPojo.getId());
         ProductPojo productPojo = productService.get(inventoryPojo.getProductId());
         return ConvertUtil.convertInventoryPojotoInventoryData(inventoryPojo, productPojo);
     }
@@ -66,7 +79,13 @@ public class InventoryDto {
         List<InventoryPojo> list = inventoryService.getAll();
         // map InventoryPojo to InventoryData
         return list.stream()
-                .map(inventoryPojo -> ConvertUtil.convertInventoryPojotoInventoryData(inventoryPojo, productService.get(inventoryPojo.getProductId())))
+                .map(inventoryPojo -> {
+                    try {
+                        return ConvertUtil.convertInventoryPojotoInventoryData(inventoryPojo, productService.get(inventoryPojo.getProductId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 

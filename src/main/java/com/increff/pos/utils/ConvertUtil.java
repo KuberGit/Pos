@@ -1,12 +1,8 @@
-package com.increff.pos.util;
+package com.increff.pos.utils;
 
 import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 public class ConvertUtil {
@@ -105,7 +101,7 @@ public class ConvertUtil {
         return d;
     }
 
-    public static ProductDetails convertProductDatatoProductDetails(ProductData productData, InventoryPojo inventoryPojo) {
+        public static ProductDetails convertProductDatatoProductDetails(ProductData productData, InventoryPojo inventoryPojo) {
         ProductDetails productDetails = new ProductDetails();
         productDetails.setBarcode(productData.getBarcode());
         productDetails.setBrand(productData.getBrand());

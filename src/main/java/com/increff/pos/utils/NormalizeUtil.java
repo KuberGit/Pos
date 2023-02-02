@@ -1,4 +1,4 @@
-package com.increff.pos.util;
+package com.increff.pos.utils;
 
 import com.increff.pos.model.BrandForm;
 //import com.increff.pos.model.ProductSearchForm;
@@ -6,7 +6,6 @@ import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.service.ApiException;
 
 
 public class NormalizeUtil {

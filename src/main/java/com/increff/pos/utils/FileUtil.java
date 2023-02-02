@@ -1,4 +1,4 @@
-package com.increff.pos.util;
+package com.increff.pos.utils;
 
 import com.increff.pos.service.ApiException;
 import org.springframework.web.multipart.MultipartFile;
