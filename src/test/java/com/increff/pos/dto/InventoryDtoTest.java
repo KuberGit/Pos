@@ -1,6 +1,7 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.model.InventoryData;
+import com.increff.pos.model.InventorySearchForm;
 import com.increff.pos.model.UploadProgressData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.pojo.BrandPojo;
@@ -17,14 +18,19 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
+import javax.transaction.Transactional;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class InventoryDtoTest extends AbstractUnitTest {
+
+    private ProductPojo productPojo;
 
     @Autowired
     private InventoryDto inventoryDto;
@@ -42,9 +48,9 @@ public class InventoryDtoTest extends AbstractUnitTest {
     public void init() throws ApiException {
         BrandPojo brandPojo = TestUtils.getBrandPojo("nike", "shoes");
         brandService.add(brandPojo);
-        ProductPojo productPojo = TestUtils.getProductPojo("runner", "nk123", brandPojo.getId(), 13999d);
+        productPojo = TestUtils.getProductPojo("runner", "nk123456", brandPojo.getId(), 13999d);
         productService.add(productPojo,brandPojo);
-        ProductPojo newProductPojo = TestUtils.getProductPojo("flyer", "nk321", brandPojo.getId(), 10999d);
+        ProductPojo newProductPojo = TestUtils.getProductPojo("flyer", "nk654321", brandPojo.getId(), 10999d);
         productService.add(newProductPojo,brandPojo);
         InventoryPojo inventoryPojo = TestUtils.getInventoryPojo(productPojo.getId(), 0);
         inventoryService.add(inventoryPojo);
@@ -53,12 +59,35 @@ public class InventoryDtoTest extends AbstractUnitTest {
     }
 
     @Test
+    @Rollback
+    public void getInventoryDataTest() throws ApiException {
+       InventoryData inventoryData = inventoryDto.getInventoryData(productPojo.getId());
+        assertNotNull(inventoryData.getId());
+        assertEquals(0, inventoryData.getQuantity());
+        assertEquals("runner", inventoryData.getName());
+        assertEquals("nk123456", inventoryData.getBarcode());
+    }
+
+    @Test
+    @Rollback
+    public void searchInventoryTest() throws ApiException {
+        InventorySearchForm inventorySearchForm = TestUtils.getInventorySearchForm("runner","nk123456");
+        List<InventoryData> inventoryData = inventoryDto.searchInventory(inventorySearchForm);
+        assertEquals(0, inventoryData.get(0).getQuantity());
+        assertEquals("runner", inventoryData.get(0).getName());
+        assertEquals("nk123456", inventoryData.get(0).getBarcode());
+//        assertEquals((Integer) 1, inventoryData.get(0).getId());
+    }
+
+    @Test
+    @Rollback
     public void getInventoryQuantityTest() throws ApiException {
-        InventoryData inventoryData = inventoryDto.getInventoryDataByBarcode("NK123");
+        InventoryData inventoryData = inventoryDto.getInventoryDataByBarcode("nk123456");
         assertEquals(0, inventoryData.getQuantity());
     }
 
     @Test
+    @Rollback
     public void getAllInventoryTest() throws ApiException {
         List<InventoryData> inventoryDataList = inventoryDto.getAllInventory();
         List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
@@ -66,31 +95,35 @@ public class InventoryDtoTest extends AbstractUnitTest {
     }
 
     @Test
+    @Rollback
     public void getInventoryByInvalidBarcodeTest() throws ApiException {
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("Barcode doesn't exist");
-        InventoryData inventoryData = inventoryDto.getInventoryDataByBarcode("NK012");
+        InventoryData inventoryData = inventoryDto.getInventoryDataByBarcode("nk012345");
     }
 
     @Test
+    @Rollback
     public void updateInventoryTest() throws ApiException {
-        InventoryForm inventoryForm = TestUtils.getInventoryForm("NK123",50);
-        InventoryPojo inventoryPojo = inventoryDto.updateInventory(1,inventoryForm);
-        ProductPojo productPojo = productService.getByBarcode("nk123");
+        InventoryForm inventoryForm = TestUtils.getInventoryForm("nk123456",50);
+        InventoryPojo inventoryPojo = inventoryDto.updateInventory(productPojo.getId(),inventoryForm);
+        ProductPojo productPojo = productService.getByBarcode("nk123456");
         InventoryPojo pojo = inventoryService.getByProductId(productPojo);
         assertEquals(productPojo.getId(), inventoryPojo.getProductId());
         assertEquals(pojo.getQuantity(), inventoryPojo.getQuantity());
     }
 
     @Test
+    @Rollback
     public void updateInventoryNegativeQuantityTest() throws ApiException {
-        InventoryForm inventoryForm = TestUtils.getInventoryForm("NK123",-20);
+        InventoryForm inventoryForm = TestUtils.getInventoryForm("nk123456",-20);
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("Quantity can not be negative for product : NK123 !!");
+        exceptionRule.expectMessage("Quantity can not be negative for product : nk123456 !!");
         InventoryPojo inventoryPojo = inventoryDto.updateInventory(1,inventoryForm);
     }
 
     @Test
+    @Rollback
     public void addBrandFromFile() throws IOException {
         FileReader file = new FileReader("testFiles/inventory.tsv");
         UploadProgressData uploadProgressData = inventoryDto.addInventoryFromFile(file);

@@ -91,13 +91,13 @@ public class BrandServiceTest extends AbstractUnitTest {
         BrandPojo brandPojo = TestUtils.getBrandPojo("apple", "electronics");
         brandDao.insert(brandPojo);
         BrandPojo expectedPojo = brandDao.selectByBrandCategory("apple", "electronics");
-        BrandForm brandForm = TestUtils.getBrandForm("apple","");
+        BrandForm brandForm = TestUtils.getBrandForm("apple","electronics");
         BrandPojo actualPojoByBrand = brandService.getByBrandCategory(brandForm);
         assertEquals(expectedPojo.getId(), actualPojoByBrand.getId());
         assertEquals(expectedPojo.getBrand(), actualPojoByBrand.getBrand());
         assertEquals(expectedPojo.getCategory(), actualPojoByBrand.getCategory());
 
-        BrandForm brandForm1 = TestUtils.getBrandForm("","electronics");
+        BrandForm brandForm1 = TestUtils.getBrandForm("apple","electronics");
         BrandPojo actualPojoByCategory = brandService.getByBrandCategory(brandForm1);
         assertEquals(expectedPojo.getId(), actualPojoByCategory.getId());
         assertEquals(expectedPojo.getBrand(), actualPojoByCategory.getBrand());

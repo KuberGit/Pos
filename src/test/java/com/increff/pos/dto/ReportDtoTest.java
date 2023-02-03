@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class ReportDtoTest extends AbstractUnitTest {
     private ReportDto reportDto;
     @Autowired
     private OrderDto orderDto;
+
+    @Value("${hibernate.dialect}")
+    private String dialect;
 
 
 
@@ -68,6 +72,7 @@ public class ReportDtoTest extends AbstractUnitTest {
 
     @Test
     public void getInventoryReportTest() throws ApiException {
+        System.out.println(dialect);
         List<InventoryReportData> list = reportDto.getInventoryReport();
         assertEquals(1,list.size());
     }

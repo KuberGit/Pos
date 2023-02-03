@@ -41,6 +41,17 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
+    public void searchBrandDataTest() throws ApiException {
+        BrandForm brandForm = TestUtils.getBrandForm(" Apple ", "  ElecTronIcs");
+        BrandPojo brandPojo1 = brandDto.addBrand(brandForm);
+        List<BrandData> brandDataList = brandDto.searchBrandData(brandForm);
+        BrandPojo brandPojo = brandService.getByBrandCategory(brandForm);
+        assertEquals(brandPojo.getId(), brandDataList.get(0).getId());
+        assertEquals(brandPojo.getBrand(), brandDataList.get(0).getBrand());
+        assertEquals(brandPojo.getCategory(), brandDataList.get(0).getCategory());
+    }
+
+    @Test
     public void addDuplicateBrandTest() throws ApiException {
         BrandForm brandForm = TestUtils.getBrandForm("Apple", "ElecTronIcs");
         BrandForm newBrandForm = TestUtils.getBrandForm(" Apple", "electronics");
@@ -92,7 +103,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void addBrandFromFile() throws IOException {
+    public void addBrandFromFileTest() throws IOException, ApiException {
         FileReader file = new FileReader("testfiles/brand.tsv");
         UploadProgressData uploadProgressData = brandDto.addBrandCategoryFromFile(file);
         assertEquals((Integer) 13, uploadProgressData.getTotalCount());

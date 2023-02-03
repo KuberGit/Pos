@@ -82,12 +82,22 @@ public class TestUtils {
         return inventoryPojo;
     }
 
-    public static OrderItemForm getOrderItemForm(String barcode, Integer quantity, Double sellingPrice) {
+    public static OrderItemForm getOrderItemForm(String barcode, String name, Integer quantity, Double sellingPrice) {
         OrderItemForm orderItemForm = new OrderItemForm();
         orderItemForm.setBarcode(barcode);
+        orderItemForm.setName(name);
         orderItemForm.setQuantity(quantity);
         orderItemForm.setSellingPrice(sellingPrice);
         return orderItemForm;
+    }
+
+    public static OrderSearchForm getOrderSearchForm(int id, String orderUser, String startDate, String endDate) {
+        OrderSearchForm orderSearchForm = new OrderSearchForm();
+        orderSearchForm.setId(id);
+        orderSearchForm.setOrderUser(orderUser);
+        orderSearchForm.setStartDate(startDate);
+        orderSearchForm.setEndDate(endDate);
+        return orderSearchForm;
     }
 
     public static OrderPojo getOrderPojo(int id, Date datetime, int invoiceCreated) {

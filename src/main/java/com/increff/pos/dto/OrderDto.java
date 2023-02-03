@@ -50,7 +50,7 @@ public class OrderDto {
     }
 
     @Transactional
-    public void updateInvoice(int id){
+    public void updateInvoice(int id) throws ApiException {
         orderService.updateInvoice(id);
     }
 

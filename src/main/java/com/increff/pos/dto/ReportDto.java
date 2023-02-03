@@ -58,7 +58,7 @@ public class ReportDto {
             int quantity = 0;
             List<ProductPojo> productList = productService.getProductByBrandCategoryId(brandCategory.getId());
             for (ProductPojo pojo : productList) {
-                InventoryPojo inventoryPojo = inventoryService.get(pojo.getId());
+                InventoryPojo inventoryPojo = inventoryService.getByProductId(pojo);
                 quantity+=inventoryPojo.getQuantity();
             }
             inventoryReportItemDataItem.setQuantity(quantity);

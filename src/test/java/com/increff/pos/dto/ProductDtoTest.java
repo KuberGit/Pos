@@ -118,7 +118,7 @@ public class ProductDtoTest extends AbstractUnitTest {
                 "Bhujiya", "ba123456", " Haldirams ", "  Food", 9.99);
         ProductPojo productPojo1 = productDto.add(productForm);
         ProductPojo productPojo = productService.getByBarcode("ba123456");
-        BrandPojo brandPojo = brandService.get(productPojo.getId());
+        BrandPojo brandPojo = brandService.get(productPojo.getBrandCategoryId());
         assertEquals(productPojo.getBrandCategoryId(), productPojo1.getBrandCategoryId());
         assertEquals(productPojo.getId(), productPojo1.getId());
         assertEquals(productPojo.getName(), productPojo1.getName());

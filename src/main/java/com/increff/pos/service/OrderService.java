@@ -33,8 +33,12 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderPojo get(int id){
-        return dao.select(OrderPojo.class,id);
+    public OrderPojo get(int id) throws ApiException {
+        OrderPojo p = dao.select(OrderPojo.class,id);
+        if(p == null) {
+            throw new ApiException("order with Id " + id + " doesn't exist");
+        }
+        return p;
     }
 
     @Transactional
@@ -45,17 +49,17 @@ public class OrderService {
 
     public void checkAvailabilityInventory(List<OrderItemForm> o) throws ApiException {
         for(OrderItemForm i:o){
-            int orderQuantity = i.quantity;
-            ProductPojo p = productService.getByBarcode(i.barcode);
+            int orderQuantity = i.getQuantity();
+            ProductPojo p = productService.getByBarcode(i.getBarcode());
             InventoryPojo iP = inventoryService.getByProductId(p);
             if(orderQuantity > iP.getQuantity()){
-                throw new ApiException("Required number of " + orderQuantity + " of " + i.barcode + " doesn't exists");
+                throw new ApiException("Required number of " + orderQuantity + " of " + i.getBarcode() + " doesn't exists");
             }
         }
     }
 
     @Transactional
-    public void updateInvoice(int id){
+    public void updateInvoice(int id) throws ApiException {
         OrderPojo p = get(id);
         p.setInvoiceCreated(1);
     }

@@ -70,7 +70,7 @@ public class InventoryDto {
     public InventoryPojo updateInventory(int id, InventoryForm form) throws ApiException {
         validateData(form);
         // get product
-        ProductPojo productMasterPojo = productService.getByBarcode(form.barcode);
+        ProductPojo productMasterPojo = productService.getByBarcode(form.getBarcode());
         InventoryPojo inventoryPojo = ConvertUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
         return inventoryService.update(id, inventoryPojo);
     }

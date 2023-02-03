@@ -75,25 +75,11 @@ public class BrandDto {
         }
     }
 
-    @Getter
-    @Setter
-    private static class BrandError {
-        private String brandName;
-
-        private String category;
-
-        private String errorMessage;
-    }
-
-    public UploadProgressData addBrandCategoryFromFile(FileReader file) {
+    public UploadProgressData addBrandCategoryFromFile(FileReader file) throws ApiException {
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<BrandForm> formList = new CsvToBeanBuilder(file)
-                    .withSeparator('\t')
-                    .withType(BrandForm.class)
-                    .build()
-                    .parse();
+            List<BrandForm> formList = new CsvToBeanBuilder(file).withSeparator('\t').withType(BrandForm.class).build().parse();
             progress.setTotalCount(formList.size());
             for (BrandForm form : formList) {
                 try {
@@ -101,24 +87,13 @@ public class BrandDto {
                     progress.setSuccessCount(progress.getSuccessCount() + 1);
                 } catch (ApiException e) {
                     progress.setErrorCount(progress.getErrorCount() + 1);
-
-                    BrandError error = new BrandError();
-                    error.setCategory(form.getCategory());
-                    error.setBrandName(form.getBrand());
-                    error.setErrorMessage(e.getMessage());
-
-                    String errorMsg = mapper.writeValueAsString(error);
-                    progress.getErrorMessages().add(errorMsg);
-                    System.out.println(e);
+                    progress.getErrorMessages().add(mapper.writeValueAsString(form) + " :: " + e.getMessage());
                 }
             }
             return progress;
         } catch (Exception e) {
-            progress.setErrorCount(progress.getErrorCount() + 1);
-            progress.getErrorMessages().add(e.getMessage());
-            System.out.println(e);
+            throw new ApiException(e.getMessage());
         }
-        return progress;
     }
 
 }
