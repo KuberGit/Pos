@@ -65,6 +65,7 @@ public class ProductService {
     @Transactional(rollbackFor = ApiException.class)
     public ProductPojo update(int id, ProductPojo p,BrandPojo b) throws ApiException {
         ProductPojo newP = check(id);
+        newP.setBarcode(p.getBarcode());
         newP.setBrandCategoryId(b.getId());
         newP.setMrp(p.getMrp());
         newP.setName(p.getName());

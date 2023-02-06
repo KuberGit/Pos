@@ -416,11 +416,20 @@ function updateQuantityInTable(barcode,table,finalQuantity){
 function addItemInTable(){
 		var barcode=$("#inputBarcode").val();
 		var quantity=$('#inputQuantity').val();
+		var sellingPrice = $('#inputMrp').val();
 		// validate data
 		if(barcode.length == 8){
 			if(quantity <= 0){
 				$.notify("Quantity for product can not be negative or zero !!","error");
 				return false;
+			}
+			if(sellingPrice == "") {
+            	$.notify("Selling Price for product can not be empty !!","error");
+                return false;
+            }
+			if(sellingPrice < 0) {
+			    $.notify("Selling Price for product can not be negative !!","error");
+                return false;
 			}
 			var availableQuantity=parseInt($('#availableQuantity').text());
 			if(availableQuantity < quantity){
@@ -464,11 +473,20 @@ function addItemInTable(){
 function addItemInEditTable(){
 	var barcode=$("#inputBarcodeEditOrder").val();
 	var quantity=$('#inputQuantityEditOrder').val();
+	var sellingPrice = $('#inputMrpEditOrder').val();
 	if(barcode.length == 8){
 		if(quantity <= 0){
 			$.notify("Quantity for product can not be negative or zero !!","error");
 			return false;
 		}
+		if(sellingPrice == "") {
+             $.notify("Selling Price for product can not be empty !!","error");
+             return false;
+        }
+		if(sellingPrice < 0) {
+            $.notify("Selling Price for product can not be negative !!","error");
+            return false;
+        }
 		var availableQuantity=parseInt($('#availableQuantityEditOrder').text());
 			if(availableQuantity < quantity){
 				$.notify("Available quantity is "+availableQuantity,"info");

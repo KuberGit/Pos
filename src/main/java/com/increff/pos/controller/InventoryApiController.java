@@ -30,7 +30,6 @@ public class InventoryApiController {
     @ApiOperation(value = "Search a Product")
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public List<InventoryData> search(@RequestBody InventorySearchForm form) throws ApiException {
-        System.out.println(form.barcode + "hi" + form.name);
         return inventoryDto.searchInventory(form);
     }
 

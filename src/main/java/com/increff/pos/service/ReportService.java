@@ -34,8 +34,7 @@ public class ReportService {
         return inventoryReportDataList;
     }
 
-    public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportDatas)
-            throws ApiException {
+    public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportDatas) throws ApiException {
         LinkedHashMap<String, SalesReportData> m = new LinkedHashMap<String, SalesReportData>();
         for (SalesReportData salesReportData : salesReportDatas) {
             // check key already exists

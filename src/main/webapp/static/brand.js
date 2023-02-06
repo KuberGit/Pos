@@ -243,6 +243,7 @@ function processData(){
          $.notify("Successfully uploaded all valid brand-categories!", 'success');
       },
       error: function(res) {
+         $.notify("Please Provide Valid File","error");
          console.log("error: "+ res.responseText);
       }
    })

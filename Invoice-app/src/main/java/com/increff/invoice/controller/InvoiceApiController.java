@@ -18,7 +18,6 @@ public class InvoiceApiController {
     @RequestMapping(value = "", consumes = "application/json")
     public String encodeOrderDetails(@RequestBody List<BillData> list) throws Exception {
 
-        System.out.println(list);
         GenerateXML.createXml(list);
         byte[] encodedBytes = GeneratePDF.createPDF();
         String encodedStr = Base64.getEncoder().encodeToString(encodedBytes);

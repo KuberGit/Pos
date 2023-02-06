@@ -41,8 +41,6 @@ public class AdminApiDto {
     }
 
     public static void validateForm (UserForm userForm) throws ApiException {
-        System.out.println(userForm.getEmail());
-        System.out.println(userForm.getPassword());
         if (!isValidEmail(userForm.getEmail())) {
             throw new ApiException("Invalid email!");
         }

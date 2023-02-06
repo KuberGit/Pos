@@ -162,9 +162,7 @@ function processData(){
             searchInventory();
 		},
 		error: function(res) {
-			console.log("error: "+ res.responseText);
-			$('.notifyjs-wrapper').trigger('notify-hide');
-			$.notify(res.responseJSON.message, 'error');
+		    $.notify("Please Provide Valid File","error");
 		}
 	})
 }

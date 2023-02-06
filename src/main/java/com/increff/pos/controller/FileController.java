@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.increff.pos.dto.BrandDto;
 import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.dto.ProductDto;
@@ -46,7 +47,7 @@ public class FileController {
      */
     @ResponseBody
     @RequestMapping(value = "/upload/file", method = RequestMethod.POST)
-    public UploadProgressData uploadFileHandler(HttpServletRequest req, HttpServletResponse resp) throws ApiException {
+    public UploadProgressData uploadFileHandler(HttpServletRequest req, HttpServletResponse resp) throws ApiException, JsonProcessingException {
         MultipartHttpServletRequest multipartReq = (MultipartHttpServletRequest) req;
         MultipartFile file = multipartReq.getFile("temp");
         String tsvType = req.getParameter("type");

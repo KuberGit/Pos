@@ -43,6 +43,10 @@ public class GenerateXML {
         Element time = document.createElement("time");
         time.appendChild(document.createTextNode(getTime()));
         root.appendChild(time);
+
+        Element orderId = document.createElement("orderId");
+        orderId.appendChild(document.createTextNode(String.valueOf(billDataItems.get(0).getId())));
+        root.appendChild(orderId);
         // Create elements from BillData list
         for (i = 0; i < billDataItems.size(); i++) {
             Element item = document.createElement("item");

@@ -170,9 +170,11 @@ public class ProductDtoTest extends AbstractUnitTest {
     public void updateProductTest() throws ApiException {
         BrandForm brandForm = TestUtils.getBrandForm("apple","electronics");
         BrandPojo brandPojo = brandService.getByBrandCategory(brandForm);
-        ProductPojo productPojo = TestUtils.getProductPojo("iphone", "ip123456", brandPojo.getId(), 34999d);
+        ProductPojo productPojo = TestUtils.getProductPojo("iphone", "ip123456", brandPojo.getId(), 34999.0);
         productService.add(productPojo,brandPojo);
-        ProductForm productForm = TestUtils.getProductForm(" IPhone 5 ","IP123456", "Apple", "Electronics", 39999d);
+        ProductForm productForm = TestUtils.getProductForm(" IPhone 5 ","ip123456", "Apple", "Electronics", 39999.0);
+        InventoryPojo inventoryPojo = TestUtils.getInventoryPojo(productPojo.getId(), 0);
+        inventoryService.add(inventoryPojo);
         ProductPojo updatedData = productDto.update(productPojo.getId(), productForm);
         ProductPojo pojo = productService.get(productPojo.getId());
         assertEquals(pojo.getId(), updatedData.getId());
@@ -182,11 +184,11 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void addProductFromFile() throws IOException {
+    public void addProductFromFile() throws IOException, ApiException {
         FileReader file = new FileReader("testFiles/product.tsv");
         UploadProgressData uploadProgressData = productDto.addProductFromFile(file);
         assertEquals((Integer) 2, uploadProgressData.getTotalCount());
         assertEquals((Integer) 0, uploadProgressData.getSuccessCount());
-        assertEquals((Integer) 1, uploadProgressData.getErrorCount());
+        assertEquals((Integer) 2, uploadProgressData.getErrorCount());
     }
 }

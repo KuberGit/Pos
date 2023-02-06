@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
+
 @Component
 public class ReportDto {
     @Autowired
@@ -75,27 +77,28 @@ public class ReportDto {
         return dateDDMMYYYY;
     }
     public List<SalesReportData> getSalesReport(SalesReportForm salesReportForm) throws ParseException, ApiException {
+        validateDate(salesReportForm.getStartdate(),salesReportForm.getEnddate());
         salesReportForm.startdate = convertDate(salesReportForm.getStartdate());
         salesReportForm.enddate =convertDate(salesReportForm.getEnddate());
-                List<Integer> orderIds = getOrderIds(salesReportForm);
+        List<Integer> orderIds = getOrderIds(salesReportForm);
         BrandForm brandForm = ConvertUtil.convertSalesReportFormtoBrandForm(salesReportForm);
         NormalizeUtil.normalizeBrandForm(brandForm);
         List<BrandPojo> brandMasterPojoList = brandService.searchBrandCategoryData(brandForm);
-        List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+        List<Integer> brandIds = brandMasterPojoList.stream().map(brandPojo -> brandPojo.getId()).collect(Collectors.toList());
         // filter using brandId list and map to product id list
         List<Integer> productIds = productService.getAll().stream()
-                .filter(o -> (brandIds.contains(o.getBrandCategoryId()))).map(o -> o.getId())
+                .filter(o -> (brandIds.contains(o.getBrandCategoryId()))).map(productPojo -> productPojo.getId())
                 .collect(Collectors.toList());
         // filter using product and order id list
         List<OrderItemPojo> listOfOrderItemPojos = orderItemService.getAll().stream()
-                .filter(o -> (productIds.contains(o.getProductId()) && orderIds.contains(o.getOrderId())))
+                .filter(orderItemPojo -> (productIds.contains(orderItemPojo.getProductId()) && orderIds.contains(orderItemPojo.getOrderId())))
                 .collect(Collectors.toList());
         // map to sales report data
         List<SalesReportData> salesReportData = listOfOrderItemPojos.stream()
-                .map(o -> {
+                .map(orderItemPojo -> {
                     try {
-                        return ConvertUtil.convertToSalesReportData(o,
-                                brandService.get(productService.get(o.getProductId()).getBrandCategoryId()));
+                        return ConvertUtil.convertToSalesReportData(orderItemPojo,
+                                brandService.get(productService.get(orderItemPojo.getProductId()).getBrandCategoryId()));
                     } catch (ApiException e) {
                         throw new RuntimeException(e);
                     }
@@ -113,6 +116,27 @@ public class ReportDto {
         return reportService.getOrderIdList(orderPojo, salesReportForm.startdate, salesReportForm.enddate);
     }
 
+    private void validateDate(String startDate, String endDate) throws ApiException{
+        if(startDate == "" || endDate == "") return;
+        String startDateArr[] = startDate.split("-");
+        String endDateArr[] = endDate.split("-");
+        if(parseInt(startDateArr[2]) > parseInt(endDateArr[2])) {
+            throw new ApiException("Start Date is greater than End Date");
+        }
+        if(parseInt(startDateArr[2]) == parseInt(endDateArr[2])) {
+            if(parseInt(startDateArr[1])>parseInt(endDateArr[1])) {
+                throw new ApiException("Start Date is greater than End Date");
+            }
+        }
+        if(parseInt(startDateArr[2]) == parseInt(endDateArr[2])) {
+            if(parseInt(startDateArr[1]) == parseInt(endDateArr[1])) {
+                if(parseInt(startDateArr[0]) > parseInt(endDateArr[0])){
+                    throw new ApiException("Start Date is greater than End Date");
+                }
+            }
+        }
+    }
+
     @Transactional(rollbackOn = ApiException.class)
     public List<DailySalesPojo> getDailySales() throws ApiException {
         return dailySalesService.getAll();
@@ -128,7 +152,6 @@ public class ReportDto {
         List<OrderPojo> orders = orderService.getAllInTimeDuration(start, end);
         p.setOrders(orders.size());
         p.setDate(today);
-        System.out.println(today);
         double totalRevenue = 0;
         int totalItems = 0;
         for(OrderPojo order:orders) {

@@ -74,6 +74,7 @@ public class ProductDto {
 
     public ProductDetails getByBarcode(String barcode) throws ApiException {
         ProductPojo productMasterPojo = productService.getByBarcode(barcode);
+        System.out.println(productMasterPojo);
         BrandPojo brandMasterPojo = brandService.get(productMasterPojo.getBrandCategoryId());
         ProductData productData = ConvertUtil.convertProductPojotoProductData(productMasterPojo,
                 brandMasterPojo);
@@ -82,7 +83,6 @@ public class ProductDto {
     }
 
     public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
-        System.out.println("1");
         BrandForm brandForm = ConvertUtil.convertProductSearchFormtoBrandForm(form);
         NormalizeUtil.normalizeBrandForm(brandForm);
         List<BrandPojo> brandMasterPojoList = brandService.searchBrandCategoryData(brandForm);
@@ -102,9 +102,8 @@ public class ProductDto {
     }
 
     public ProductPojo update(int id,ProductForm f) throws ApiException {
-        validateFormUpdate(f);
+        validateFormUpdate(id,f);
         BrandForm brandForm = ConvertUtil.convertProductFormtoBrandForm(f);
-        NormalizeUtil.normalizeBrandForm(brandForm);
         NormalizeUtil.normalizeBrandForm(brandForm);
         BrandPojo b = brandService.getByBrandCategory(brandForm);
         ProductPojo p = ConvertUtil.convertProductFormtoProductPojoU(f,b);
@@ -132,30 +131,30 @@ public class ProductDto {
         }
     }
 
-    private void validateFormUpdate(ProductForm b) throws ApiException {
+    private void validateFormUpdate(int id, ProductForm b) throws ApiException {
+        ProductDetails p = getByBarcode(b.getBarcode());
+        System.out.println(p);
+        if(p != null) {
+            if(p.getId()!=id) {
+                throw new ApiException("Barcode already exists");
+            }
+        }
         if (b.getName() == null) {
             throw new ApiException("Please Enter Name");
         }
         if (b.getMrp() <= 0) {
             throw new ApiException("Please Enter a positive mrp!");
         }
-        if (b.getBarcode().length() < 8) {
+        if (b.getBarcode().length() < 8 || !isValidBarcode(b.getBarcode())) {
             throw new ApiException("Please Enter a valid barcode");
-        }
-        if(!isValidBarcode(b.getBarcode())) {
-            throw new ApiException("Please Enter a valid barcode!");
         }
     }
 
-    public UploadProgressData addProductFromFile(FileReader file) {
+    public UploadProgressData addProductFromFile(FileReader file) throws ApiException {
         UploadProgressData progress = new UploadProgressData();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<ProductForm> formList = new CsvToBeanBuilder(file)
-                    .withSeparator('\t')
-                    .withType(ProductForm.class)
-                    .build()
-                    .parse();
+            List<ProductForm> formList = new CsvToBeanBuilder(file).withSeparator('\t').withType(ProductForm.class).build().parse();
             progress.setTotalCount(formList.size());
             for (ProductForm form : formList) {
                 try {
@@ -163,18 +162,13 @@ public class ProductDto {
                     progress.setSuccessCount(progress.getSuccessCount() + 1);
                 } catch (ApiException e) {
                     progress.setErrorCount(progress.getErrorCount() + 1);
-                    String errorMsg = mapper.writeValueAsString(form) + " :: " + e.getMessage();
-                    progress.getErrorMessages().add(errorMsg);
-                    System.out.println(e);
+                    progress.getErrorMessages().add(mapper.writeValueAsString(form) + " :: " + e.getMessage());
                 }
             }
             return progress;
         } catch (Exception e) {
-            progress.setErrorCount(progress.getErrorCount() + 1);
-            progress.getErrorMessages().add(e.getMessage());
-            System.out.println(e);
+            throw new ApiException(e.getMessage());
         }
-        return progress;
     }
 
     public static boolean isValidBarcode(String barcode) {

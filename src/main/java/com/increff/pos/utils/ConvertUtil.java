@@ -60,6 +60,7 @@ public class ConvertUtil {
 
     public static ProductPojo convertProductFormtoProductPojoU(ProductForm f,BrandPojo b){
         ProductPojo p = new ProductPojo();
+        p.setBarcode(f.getBarcode());
         p.setBrandCategoryId(b.getId());
         p.setName(f.getName());
         p.setMrp(f.getMrp());

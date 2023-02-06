@@ -72,7 +72,6 @@ public class ReportDtoTest extends AbstractUnitTest {
 
     @Test
     public void getInventoryReportTest() throws ApiException {
-        System.out.println(dialect);
         List<InventoryReportData> list = reportDto.getInventoryReport();
         assertEquals(1,list.size());
     }

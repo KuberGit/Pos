@@ -223,8 +223,11 @@ var processCount = 0;
 
 function processData(){
    var file = $('#productFile')[0].files[0];
-   console.log(file);
-//   readFileData(file, readFileDataCallback);
+   if (!file) {
+        $('.notifyjs-wrapper').trigger('notify-hide');
+        $.notify('No file selected', 'error');
+        return;
+   }
    url = "/pos/upload/file"
    var data = new FormData();
    data.append("temp", file);
@@ -241,10 +244,12 @@ function processData(){
          $("#processCountProduct").text(res.successCount);
          $("#errorCountProduct").text(res.errorCount);
          if(res.errorCount != 0) document.getElementById("download-errors-product").disabled = false;
+         searchProduct();
          $('.notifyjs-wrapper').trigger('notify-hide');
          $.notify("Successfully uploaded all valid products!", 'success');
       },
       error: function(res) {
+         $.notify("Please Provide Valid File","error");
          console.log("error: "+ res.responseText);
       }
    })

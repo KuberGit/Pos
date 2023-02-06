@@ -1,3 +1,3 @@
-brand	category	name	mrp
-string	string	zeeshan	786
-amul	test	vinamra	1234
+barcode	brand	category	name	mrp
+testbar3	string	string	zeeshan	786
+testbar4	amul	test	vinamra	1234

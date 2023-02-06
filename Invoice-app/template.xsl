@@ -41,11 +41,7 @@
                     <fo:table-row>
                         <fo:table-cell padding-top="50pt">
                             <fo:block font-size="20pt" font-family="sans-serif" color="black" text-align="center">
-                                Order Id
-                            </fo:block>
-                        </fo:table-cell>
-                        <fo:table-cell padding-top="50pt">
-                            <fo:block font-size="20pt" font-family="sans-serif" color="red" text-align="center">
+                                Order Id :
                                 <xsl:value-of select="orderId" />
                             </fo:block>
                         </fo:table-cell>
