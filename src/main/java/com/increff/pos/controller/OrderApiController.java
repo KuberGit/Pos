@@ -52,11 +52,11 @@ public class OrderApiController {
     }
 
     @ApiOperation(value = "Generates invoice")
-    @RequestMapping(value = "/invoice", method = RequestMethod.POST)
-    public void generateInvoice(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
+    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.POST)
+    public void generateInvoice(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.generateInvoice(orderItemForms);
-        String base64Str = invoiceConnect(list);
+        String base64Str = invoiceConnect(list,id);
         GeneratePDF.createResponse(response, base64Str);
     }
 
@@ -65,8 +65,6 @@ public class OrderApiController {
     public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.createOrder(orderItemForms);
-        String base64Str = invoiceConnect(list);
-        GeneratePDF.createResponse(response, base64Str);
     }
 
     @ApiOperation(value = "Search Orders")
@@ -80,14 +78,11 @@ public class OrderApiController {
     public void update(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> billItemList = orderDto.changeOrder(id, orderItemForms);
-        String base64Str = invoiceConnect(billItemList);
-        GeneratePDF.createResponse(response, base64Str);
     }
 
-    public String invoiceConnect(List<BillData> list) throws ApiException {
+    public String invoiceConnect(List<BillData> list,int id) throws ApiException {
         try {
-            final String url = "http://localhost:8000/invoice/";
-
+            final String url = "http://localhost:8000/invoice/" + "/" + id;
             String base64Str = restTemplate.postForObject(url, list, String.class);
             return base64Str;
         } catch (Exception e) {

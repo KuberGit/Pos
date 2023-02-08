@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GenerateXML {
 
-    public static void createXml(List<BillData> billDataItems)
+    public static void createXml(List<BillData> billDataItems, int idOrder)
             throws ParserConfigurationException, TransformerException {
         String xmlFilePath = "billDataXML.xml";
 
@@ -45,7 +45,7 @@ public class GenerateXML {
         root.appendChild(time);
 
         Element orderId = document.createElement("orderId");
-        orderId.appendChild(document.createTextNode(String.valueOf(billDataItems.get(0).getId())));
+        orderId.appendChild(document.createTextNode(String.valueOf(idOrder)));
         root.appendChild(orderId);
         // Create elements from BillData list
         for (i = 0; i < billDataItems.size(); i++) {

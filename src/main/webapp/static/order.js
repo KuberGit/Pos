@@ -251,7 +251,8 @@ function generateInvoice(id){
            	url: url,
            	type: 'GET',
            	success: function(dataRec) {
-           	      var url=getOrderUrl() + "/invoice";
+           	      var url=getOrderUrl() + "/invoice" + "/" + id;
+           	      console.log(url);
                   		$.ajax({
                   			url: url,
                   			type: 'POST',
@@ -314,7 +315,7 @@ function displayOrderList(data){
 			buttonHtml+=' <button title="Generate Invoice" class="btn btn-outline-success" onclick="generateInvoice(' + e.id + ')"><i class="fa fa-file-invoice fa-lg" aria-hidden="true"></i></button>'
 			var row = '<tr>'
 			+ '<td>' + n + '</td>'
-			+ '<td>' + Date(e.datetime).toString().split("G")[0] + '</td>'
+			+ '<td>' + new Date(e.datetime).toString().split("G")[0] + '</td>'
 			+ '<td>' + e.billAmount + '</td>'
 			+ '<td>' + buttonHtml + '</td>'
 			+ '</tr>';
