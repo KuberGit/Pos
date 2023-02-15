@@ -20,7 +20,6 @@ import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-import javax.transaction.Transactional;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -108,7 +107,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryForm inventoryForm = TestUtils.getInventoryForm("nk123456",50);
         InventoryPojo inventoryPojo = inventoryDto.updateInventory(productPojo.getId(),inventoryForm);
         ProductPojo productPojo = productService.getByBarcode("nk123456");
-        InventoryPojo pojo = inventoryService.getByProductId(productPojo);
+        InventoryPojo pojo = inventoryService.getByProduct(productPojo);
         assertEquals(productPojo.getId(), inventoryPojo.getProductId());
         assertEquals(pojo.getQuantity(), inventoryPojo.getQuantity());
     }

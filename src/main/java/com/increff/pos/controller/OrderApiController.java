@@ -5,6 +5,7 @@ import com.increff.pos.model.BillData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.OrderSearchForm;
+import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.utils.GeneratePDF;
 import io.swagger.annotations.Api;
@@ -55,9 +56,11 @@ public class OrderApiController {
     @RequestMapping(value = "/invoice/{id}", method = RequestMethod.POST)
     public void generateInvoice(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
-        List<BillData> list = orderDto.generateInvoice(orderItemForms);
-        String base64Str = invoiceConnect(list,id);
-        GeneratePDF.createResponse(response, base64Str);
+        if(orderDto.get(id).getIsInvoiceCreated()==0) {
+            List<BillData> list = orderDto.generateInvoice(orderItemForms);
+            String base64Str = invoiceConnect(list, id);
+            GeneratePDF.createResponse(response, base64Str);
+        }
     }
 
     @ApiOperation(value = "Adds Order")
@@ -65,12 +68,6 @@ public class OrderApiController {
     public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
             throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
         List<BillData> list = orderDto.createOrder(orderItemForms);
-    }
-
-    @ApiOperation(value = "Search Orders")
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public List<OrderData> search(@RequestBody OrderSearchForm form) throws ApiException, ParseException {
-        return orderDto.searchOrder(form);
     }
 
     @ApiOperation(value = "Update Order")

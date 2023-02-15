@@ -18,7 +18,7 @@ public class DailySalesPojo {
     @Id
     private int id;
     @Column(nullable = false)
-    private Date date; // todo remove from primary key and make one more primary key column --> done
+    private Date date;
     @Column(nullable = false)
     private int orders;
     @Column(nullable = false)

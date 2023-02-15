@@ -24,8 +24,6 @@ function salesReport(){
 		return false;
 	}
 
-	console.log(startdate);
-    console.log(enddate);
 
 	var $form = $("#salesreport-form");
 	// form to json
@@ -63,7 +61,7 @@ function displaySalesList(data){
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>' + e.category + '</td>'
 		+ '<td>'  + e.quantity + '</td>'
-		+ '<td>'  + e.revenue + '</td>'
+		+ '<td>'  + e.revenue.toFixed(2) + '</td>'
 		+ '</tr>';
 		$tbody.append(row);
 		n++;

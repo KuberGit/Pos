@@ -18,7 +18,7 @@ public class UserPojo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(nullable = false)
-	private String email; // todo unique comb of email and pass --> done
+	private String email;
 	@Column(nullable = false)
 	private String password;
 	@Column(nullable = false)

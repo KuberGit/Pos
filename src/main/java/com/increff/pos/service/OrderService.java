@@ -51,7 +51,7 @@ public class OrderService {
         for(OrderItemForm i:o){
             int orderQuantity = i.getQuantity();
             ProductPojo p = productService.getByBarcode(i.getBarcode());
-            InventoryPojo iP = inventoryService.getByProductId(p);
+            InventoryPojo iP = inventoryService.getByProduct(p);
             if(orderQuantity > iP.getQuantity()){
                 throw new ApiException("Required number of " + orderQuantity + " of " + i.getBarcode() + " doesn't exists");
             }
@@ -66,7 +66,7 @@ public class OrderService {
 
     public void updateInventory(List<OrderItemPojo> l) throws ApiException {
         for(OrderItemPojo p:l){
-            InventoryPojo iP = inventoryService.getByProductId(productService.get(p.getProductId()));
+            InventoryPojo iP = inventoryService.getByProduct(productService.get(p.getProductId()));
             int updatedQuantity = iP.getQuantity() - p.getQuantity();
             iP.setQuantity(updatedQuantity);
             inventoryService.update(iP.getId(),iP);

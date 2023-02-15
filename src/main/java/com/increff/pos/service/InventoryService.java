@@ -31,7 +31,7 @@ public class InventoryService {
     }
 
     @Transactional
-    public InventoryPojo getByProductId(ProductPojo p) {
+    public InventoryPojo getByProduct(ProductPojo p) {
         return dao.selectByProductId(p.getId());
     }
 

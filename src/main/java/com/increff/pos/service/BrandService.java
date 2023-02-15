@@ -10,21 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class BrandService { // todo fill the values entered in search to add modal and after adding search bars should be null --> done
+public class BrandService {
 
-    // todo datetime is in milliseconds --> done and add tooltips on hovering over the buttons --> done
+
     @Autowired
     private BrandDao dao;
 
     @Transactional
-    public BrandPojo add(BrandPojo p) throws ApiException { // todo normalize in dto --> done
+    public BrandPojo add(BrandPojo p) throws ApiException {
         getCheckBrandCategoryExist(p.getBrand(),p.getCategory());
         dao.insert(p);
         return p;
     }
 
     @Transactional(readOnly = true)
-    public BrandPojo get(int id) throws ApiException { // todo add a edge case where id is not in db --> done
+    public BrandPojo get(int id) throws ApiException {
         try {
             return getCheck(id);
         }

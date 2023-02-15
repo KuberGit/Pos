@@ -28,7 +28,7 @@ public class InventoryDto {
     public InventoryPojo addInventory(InventoryForm form) throws ApiException {
         validateData(form);
         ProductPojo productPojo = productService.getByBarcode(form.getBarcode());
-        InventoryPojo inventoryPojo = inventoryService.getByProductId(productPojo);
+        InventoryPojo inventoryPojo = inventoryService.getByProduct(productPojo);
         inventoryPojo.setQuantity(form.quantity + inventoryPojo.getQuantity());
         return inventoryService.update(inventoryPojo.getId(), inventoryPojo);
     }
@@ -40,7 +40,7 @@ public class InventoryDto {
         List<Integer> productIds = productMasterPojoList.stream().map(ProductPojo::getId).collect(Collectors.toList());
         // filter according to product id list
         List<InventoryPojo> list = inventoryService.getAll().stream()
-                .filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
+                .filter(inventoryPojo -> (productIds.contains(inventoryPojo.getProductId()))).collect(Collectors.toList());
         // map InventoryPojo to InventoryData
         return list.stream()
                 .map(inventoryPojo -> {
@@ -113,14 +113,12 @@ public class InventoryDto {
                     progress.setErrorCount(progress.getErrorCount() + 1);
                     String errorMsg = mapper.writeValueAsString(form) + " :: " + e.getMessage();
                     progress.getErrorMessages().add(errorMsg);
-                    System.out.println(e);
                 }
             }
             return progress;
         } catch (Exception e) {
             progress.setErrorCount(progress.getErrorCount() + 1);
             progress.getErrorMessages().add(e.getMessage());
-            System.out.println(e);
         }
         return progress;
     }

@@ -58,7 +58,7 @@ public class OrderDto {
     public List<BillData> generateInvoice(OrderItemForm[] orderItemForms) throws ApiException {
         List<BillData> reqBill = new ArrayList<BillData>();
         int newId = 1;
-        for(OrderItemForm p:orderItemForms) {
+        for (OrderItemForm p : orderItemForms) {
             BillData item = new BillData();
             item.setName(p.getName());
             item.setQuantity(p.getQuantity());
@@ -114,7 +114,7 @@ public class OrderDto {
     public void addInInventory(List<OrderItemData> orderItemDataList) throws ApiException {
         for (OrderItemData orderItemData : orderItemDataList) {
             ProductPojo productMasterPojo = productService.getByBarcode(orderItemData.barcode);
-            InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
+            InventoryPojo inventoryPojo = inventoryService.getByProduct(productMasterPojo);
             InventoryPojo inventoryPojoFinal = new InventoryPojo();
             inventoryPojoFinal.setQuantity(orderItemData.quantity + inventoryPojo.getQuantity());
             inventoryService.update(inventoryPojo.getId(), inventoryPojoFinal);
@@ -141,40 +141,4 @@ public class OrderDto {
                 })
                 .collect(Collectors.toList());
     }
-
-    public List<OrderData> searchOrder(OrderSearchForm form) throws ApiException, ParseException {
-        List<OrderPojo> orderPojo = orderService.searchOrder(form);
-        // create list by date range
-        if (!form.getStartDate().isEmpty() && !form.getEndDate().isEmpty()) {
-            orderPojo = orderService.getListSearch(orderPojo, form.getStartDate(), form.getEndDate());
-        }
-        if (form.getId() == 0) {
-            return orderPojo.stream()
-                    .map(o -> {
-                        try {
-                            return ConvertUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId()));
-                        } catch (ApiException e) {
-                            e.printStackTrace();
-                            OrderData p = new OrderData();
-                            return p;
-                        }
-                    })
-                    .collect(Collectors.toList());
-        }
-        // filter using orderId
-        orderPojo = orderPojo.stream().filter(o -> (form.getId() == o.getId())).collect(Collectors.toList());
-        // map OrderPojo to OrderData
-        return orderPojo.stream()
-                .map(o -> {
-                    try {
-                        return ConvertUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId()));
-                    } catch (ApiException e) {
-                        e.printStackTrace();
-                        OrderData p = new OrderData();
-                        return p;
-                    }
-                })
-                .collect(Collectors.toList());
-    }
-
 }

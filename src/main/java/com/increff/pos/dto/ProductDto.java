@@ -39,7 +39,7 @@ public class ProductDto {
 
 
     @Transactional(rollbackFor = ApiException.class)
-    public ProductPojo add(ProductForm f) throws ApiException { //todo create a datautil checking datatype for every input --> not needed and create a index in DB for brand and category and product barcode --> done
+    public ProductPojo add(ProductForm f) throws ApiException {
         validateForm(f);
         BrandForm brandForm = ConvertUtil.convertProductFormtoBrandForm(f);
         NormalizeUtil.normalizeBrandForm(brandForm);
@@ -74,11 +74,10 @@ public class ProductDto {
 
     public ProductDetails getByBarcode(String barcode) throws ApiException {
         ProductPojo productMasterPojo = productService.getByBarcode(barcode);
-        System.out.println(productMasterPojo);
         BrandPojo brandMasterPojo = brandService.get(productMasterPojo.getBrandCategoryId());
         ProductData productData = ConvertUtil.convertProductPojotoProductData(productMasterPojo,
                 brandMasterPojo);
-        InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
+        InventoryPojo inventoryPojo = inventoryService.getByProduct(productMasterPojo);
         return ConvertUtil.convertProductDatatoProductDetails(productData, inventoryPojo);
     }
 
@@ -133,7 +132,6 @@ public class ProductDto {
 
     private void validateFormUpdate(int id, ProductForm b) throws ApiException {
         ProductDetails p = getByBarcode(b.getBarcode());
-        System.out.println(p);
         if(p != null) {
             if(p.getId()!=id) {
                 throw new ApiException("Barcode already exists");
